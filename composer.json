@@ -1,5 +1,5 @@
 {
-    "name": "xd/cookieconsent",
+    "name": "xd/silverstripe-cookieconsent",
     "description": "GDPR compliant cookie bar and consent checker",
     "type": "silverstripe-vendormodule",
     "keywords": ["silverstripe", "GDPR", "Cookie", "Bar", "Consent"],

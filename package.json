@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "silverstripe-cookie-consent",
   "version": "1.0.0",
   "description": "A project using Laravel Mix for asset compilation",
   "main": "index.js",
