@@ -15,7 +15,7 @@
             </a>
             </div>
             <div class="col-md-4 col-sm-12">
-                <a class="btn btn-outline-gray-600 btn-sm w-100 mb-md-0 mb-2" href="$AcceptNecessaryCookiesLink" rel="nofollow" id="accept-all-cookies">
+                <a class="btn btn-outline-gray-600 btn-sm w-100 mb-md-0 mb-2" href="$AcceptNecessaryCookiesLink" rel="nofollow" id="accept-necessary-cookies">
                     <i class="fa-regular fa-close"></i>
                     <%t XD\\CookieConsent\\CookieConsent.AcceptNecessaryCookies 'Accept necessary cookies' %>
                 </a>

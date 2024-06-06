@@ -84,7 +84,7 @@ class CookieConsent
      */
     public static function grantAll()
     {
-        $consent = array_keys(Config::inst()->get(CookieConsent::class, 'cookies'));
+        $consent = array_keys(Config::inst()->get(CookieConsent::class, 'cookie_groups'));
         self::setConsent($consent);
     }
 
@@ -97,7 +97,7 @@ class CookieConsent
     {
         $consent = self::getConsent();
         $key = array_search($group, $consent);
-        $cookies = Config::inst()->get(CookieConsent::class, 'cookies');
+        $cookies = Config::inst()->get(CookieConsent::class, 'cookie_groups');
         if (isset($cookies[$group])) {
             foreach ($cookies[$group] as $host => $cookies) {
                 $host = ($host === CookieGroup::LOCAL_PROVIDER)

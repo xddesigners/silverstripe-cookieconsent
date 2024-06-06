@@ -35,16 +35,15 @@ class ContentControllerExtension extends Extension
     public function onAfterInit()
     {
 
-        if( CookieConsent::check() ) return;
+        // if( CookieConsent::check() ) return;
 
+        $module = ModuleLoader::getModule('xddesigners/silverstripe-cookieconsent');
         if (Config::inst()->get(CookieConsent::class, 'include_css')) {
-            $module = ModuleLoader::getModule('xd/cookieconsent');
-            Requirements::css($module->getResource('css/cookieconsent.css')->getRelativePath());
+            Requirements::css($module->getResource('client/dist/styles/cookieconsent.css')->getRelativePath());
         }
 
         if (Config::inst()->get(CookieConsent::class, 'include_javascript')) {
-            $module = ModuleLoader::getModule('xd/cookieconsent');
-            Requirements::css($module->getResource('javascript/cookieconsent.js')->getRelativePath());
+            Requirements::javascript($module->getResource('client/dist/js/cookieconsent.js')->getRelativePath());
         }
 
     }
