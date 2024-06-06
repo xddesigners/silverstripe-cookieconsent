@@ -1,0 +1,29 @@
+---
+Name: cookieconsent
+---
+XD\CookieConsent\CookieConsent:
+  cookie_groups:
+    Necessary:
+      active: true
+    Analytics:
+      active: true
+      consent_modes:
+        - analytics_storage
+    Marketing:
+      active: true
+      consent_modes:
+        - ad_storage
+        - ad_user_data
+        - ad_personalization
+
+SilverStripe\Control\Director:
+  rules:
+    acceptAllCookies: PageController
+
+SilverStripe\CMS\Controllers\ContentController:
+  extensions:
+    - XD\CookieConsent\Extensions\ContentControllerExtension
+
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - XD\CookieConsent\Extensions\SiteConfigExtension
