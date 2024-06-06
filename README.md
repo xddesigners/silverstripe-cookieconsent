@@ -4,7 +4,7 @@ GDPR compliant cookie bar and consent checker
 ## Installation
 Install the module trough composer:
 ```bash
-composer require xd/silverstripe-cookieconsent
+composer require xddesigners/silverstripe-cookieconsent
 ``` 
 
 Include the popup template in your base Page.ss
