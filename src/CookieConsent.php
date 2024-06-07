@@ -97,9 +97,9 @@ class CookieConsent
     {
         $consent = self::getConsent();
         $key = array_search($group, $consent);
-        $cookies = Config::inst()->get(CookieConsent::class, 'cookie_groups');
-        if (isset($cookies[$group])) {
-            foreach ($cookies[$group] as $host => $cookies) {
+        $cookieGroups = Config::inst()->get(CookieConsent::class, 'cookie_groups');
+        if (isset($cookieGroups[$group]) && isset($cookieGroups[$group]['cookies'])) {
+            foreach ($cookieGroups[$group]['cookies'] as $host => $cookies) {
                 $host = ($host === CookieGroup::LOCAL_PROVIDER)
                     ? Director::host()
                     : str_replace('_', '.', $host);

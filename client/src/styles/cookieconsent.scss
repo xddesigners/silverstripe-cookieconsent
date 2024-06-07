@@ -6,29 +6,20 @@
 .cookie-consent {
     animation: entercookiebar .75s forwards .5s ease-out;
     bottom: -20rem;
-
     border-radius: var(--bs-border-radius);
+    background-color: white;
+    color: #333;
     right: 0;
     z-index: 1000;
-
     position: fixed;
     box-shadow: 0 0 50px rgba(0,0,0, .25);
-    // background-color: var(--bs-body-bg);
-
     margin: .5rem;
-    // max-width: calc(100% - 1rem) !important;
-
     max-width: 800px;
-
-    //@include media-breakpoint-up(medium) {
-    //    // border-radius: 2rem !important;
-    //    margin: .75rem !important;
-    //    max-width: 800px !important;
-    //}
 
     h4 {
         font-size: 1.25rem;
         margin-bottom: .5rem;
+        color: #333 !important;
     }
 
     .btn {
@@ -40,12 +31,6 @@
             margin-bottom: 0;
         }
 
-        //@include media-breakpoint-up(medium) {
-        //    width: auto;
-        //    display: inline-block;
-        //    margin-bottom: 0;
-        //}
-
         &.btn-link:hover,
         &.btn-link:focus {
             background-color: transparent;
@@ -53,61 +38,23 @@
     }
 }
 
-.cookie-consent-field {
-    display: inline-block;
-    width: 100%;
+.cookie-group-table{
+    font-size: .9rem;
+}
 
-    &__field,
-    &__description,
-    &__label {
-        box-sizing: border-box;
-        float: left;
-        padding: 0; // .5rem;
-        width: 100%;
-    }
+.cookie-consent-field__label{
+    font-weight: bold;
+}
 
-    &__field,
-    &__label {
-        width: 50%;
-        //font-size: $small-font-size;
-        //font-weight: $font-weight-bold;
-        label {
-            padding-top: 8px;
-        }
-        @media print, screen and (min-width: 768px) {
-            label {
-                padding-top: 0;
-            }
-            width: 16.66667%;
-        }
-    }
+.cookie-consent-field__description{
+    max-width: 600px;
+}
 
-    &__description {
-        //font-size: $small-font-size*.9;
-        opacity: .7;
-        p{
-            margin: 0;
-        }
-        @media print, screen and (min-width: 768px) {
-            width: 66.66667%;
-            position: relative;
-            left: -16.66667%;
-        }
-    }
-
-    &__message {
-        box-sizing: border-box;
-    }
-
-    &__field {
-        input[type="checkbox"],
-        .switch {
-            float: right;
-        }
-
-        @media print, screen and (min-width: 768px) {
-            position: relative;
-            left: 66.66667%;
-        }
+.cookie-accordion{
+    .accordion-button{
+        font-weight: normal !important;
+        font-family: var(--bs-body-font-family);
+        font-size: 1rem;
     }
 }
+

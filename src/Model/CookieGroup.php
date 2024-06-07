@@ -2,6 +2,8 @@
 
 namespace XD\CookieConsent\Model;
 
+use SilverStripe\Control\Director;
+use SilverStripe\Core\Environment;
 use SilverStripe\Forms\CheckboxSetField;
 use XD\CookieConsent\CookieConsent;
 use XD\CookieConsent\Forms\CookieConsentCheckBoxField;
@@ -42,6 +44,7 @@ class CookieGroup extends DataObject
     private static $db = [
         'ConfigName' => 'Varchar(255)',
         'Active' => 'Boolean',
+        'ShowCookies' => 'Boolean',
         'Title' => 'Varchar(255)',
         'Content' => 'HTMLText',
     ];
@@ -81,6 +84,7 @@ class CookieGroup extends DataObject
             TextField::create('Title', _t(__CLASS__ . '.Title', 'Title')),
             HtmlEditorField::create('Content', _t(__CLASS__ . '.Content', 'Content'))->setRows(5),
             CheckboxSetField::create('ConsentModes', _t(__CLASS__ . '.ConsentModes', 'ConsentModes'), ConsentMode::get(), $this->ConsentModes()),
+            CheckboxField::create('ShowCookies', _t(__CLASS__ . '.ShowCookies', 'Show cookie details')),
             GridField::create('Cookies', _t(__CLASS__ . '.Cookies', 'Cookies'), $this->Cookies(), GridFieldConfigCookies::create())
         ));
 
@@ -128,14 +132,15 @@ class CookieGroup extends DataObject
 //                }
 //            }
 
+
             foreach ($cookiesConfig as $groupName => $groupSettings) {
                 if (!$group = self::get()->find('ConfigName', $groupName)) {
-                    $group = self::create(array(
+                    $group = self::create([
                         'ConfigName' => $groupName,
-                        'Active' => (bool) $groupSettings['active'],
+                        'Active' => (bool)$groupSettings['active'],
                         'Title' => _t(__CLASS__ . ".$groupName", $groupName),
                         'Content' => _t(__CLASS__ . ".{$groupName}_Content", $groupName)
-                    ));
+                    ]);
 
                     $group->write();
                     DB::alteration_message(sprintf('Cookie group "%s" created', $groupName), 'created');
@@ -151,36 +156,39 @@ class CookieGroup extends DataObject
 
                 }
 
-//                foreach ($providers as $providerName => $cookies) {
-//                    if ($providerName === self::LOCAL_PROVIDER && Director::is_cli() && $url = Environment::getEnv('SS_BASE_URL')) {
-//                        $providerLabel = parse_url($url, PHP_URL_HOST);
-//                    } elseif ($providerName === self::LOCAL_PROVIDER) {
-//                        $providerLabel = Director::host();
-//                    } else {
-//                        $providerLabel = str_replace('_', '.', $providerName);
-//                    }
-//
-//                    foreach ($cookies as $cookieName) {
-//                        $cookie = CookieDescription::get()->filter(array(
-//                            'ConfigName' => $cookieName,
-//                            'Provider' => $providerLabel
-//                        ))->first();
-//
-//                        if (!$cookie) {
-//                            $cookie = CookieDescription::create(array(
-//                                'ConfigName' => $cookieName,
-//                                'Title' => $cookieName,
-//                                'Provider' => $providerLabel,
-//                                'Purpose' => _t("CookieConsent_{$providerName}.{$cookieName}_Purpose", "$cookieName"),
-//                                'Expiry' => _t("CookieConsent_{$providerName}.{$cookieName}_Expiry", 'Session')
-//                            ));
-//
-//                            $group->Cookies()->add($cookie);
-//                            $cookie->flushCache();
-//                            DB::alteration_message(sprintf('Cookie "%s" created and added to group "%s"', $cookieName, $groupName), 'created');
-//                        }
-//                    }
-//                }
+                if (isset($groupSettings['cookies'])) {
+                    $providers = $groupSettings['cookies'];
+                    foreach ($providers as $providerName => $cookies) {
+                        if ($providerName === self::LOCAL_PROVIDER && Director::is_cli() && $url = Environment::getEnv('SS_BASE_URL')) {
+                            $providerLabel = parse_url($url, PHP_URL_HOST);
+                        } elseif ($providerName === self::LOCAL_PROVIDER) {
+                            $providerLabel = Director::host();
+                        } else {
+                            $providerLabel = str_replace('_', '.', $providerName);
+                        }
+
+                        foreach ($cookies as $cookieName) {
+                            $cookie = CookieDescription::get()->filter(array(
+                                'ConfigName' => $cookieName,
+                                'Provider' => $providerLabel
+                            ))->first();
+
+                            if (!$cookie) {
+                                $cookie = CookieDescription::create(array(
+                                    'ConfigName' => $cookieName,
+                                    'Title' => $cookieName,
+                                    'Provider' => $providerLabel,
+                                    'Purpose' => _t("CookieConsent_{$providerName}.{$cookieName}_Purpose", "$cookieName"),
+                                    'Expiry' => _t("CookieConsent_{$providerName}.{$cookieName}_Expiry", 'Session')
+                                ));
+
+                                $group->Cookies()->add($cookie);
+                                $cookie->flushCache();
+                                DB::alteration_message(sprintf('Cookie "%s" created and added to group "%s"', $cookieName, $groupName), 'created');
+                            }
+                        }
+                    }
+                }
 
                 $group->flushCache();
             }

@@ -49,6 +49,11 @@ class CookiePolicyPage extends Page
         }
     }
 
+    public function getCookieGroups()
+    {
+        return CookieGroup::get()->filter(['Active'=>1]);
+    }
+
     /**
      * Get the active cookie policy page
      *

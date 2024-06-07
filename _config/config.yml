@@ -5,20 +5,92 @@ XD\CookieConsent\CookieConsent:
   cookie_groups:
     Necessary:
       active: true
+      cookies:
+        local:
+          - PHPSESSID
+          - CookieConsent
+    #        - FluentLocale
+    #        - ipcountry
+    #      _google_com:
+    #        - 1P_JAR
+    #        - APISID
+    #        - CONSENT
+    #        - HSID
+    #        - NID
+    #        - OGPC
+    #        - SAPISID
+    #        - SID
+    #        - SIDCC
+    #        - SSID
+    #      www_google_com:
+    #        - OTZ
+    #      _mapbox_com:
+    #        - _ga
+    #        - _mkto_trk
+    #        - ajs_anonymous_id
+    #        - ajs_group_id
+    #        - ajs_user_id
+    #        - intercom-id-wg57poe2
+    #        - mkjs_group_id
+    #        - mkjs_user_id
+    #        - optimizelyEndUserId
     Analytics:
       active: true
       consent_modes:
         - analytics_storage
+      cookies:
+        local:
+          - _ga
+          - _gat
+          - _gid
+    #      www_google_com:
+    #        - _ga
+    #      _linkedin_com:
+    #        - bcookie
+    #        - lidc
+    #      _addthis_com:
+    #        - mus
+    #        - ouid
+    #        - uid
+    #        - uvc
+    #      _facebook_com:
+    #        - fr
+    #      _youtube_com:
+    #        - GPS
+    #        - PREF
+    #        - VISITOR_INFO1_LIVE
+    #        - YSC
+    #        - NID
+    #        - CONSENT
+    #      _vimeo_com:
+    #        - vuid
+    #        - player
     Marketing:
       active: true
       consent_modes:
         - ad_storage
         - ad_user_data
         - ad_personalization
+      # cookies:
+      #      _ads_linkedin_com:
+      #        - BizoID
+      #        - UserMatchHistory
+      #        - lang
+      #      _doubleclick_net:
+      #        - DSID
+      #        - IDE
+      #      _linkedin_com:
+      #        - bcookie
+      #        - lang
+      #        - lidc
+      #      _www_linkedin_com:
+      #        - bscookie
+      #      www_linkedin_com:
+      #        - visit
 
-SilverStripe\Control\Director:
-  rules:
-    acceptAllCookies: PageController
+#SilverStripe\Control\Director:
+#  rules:
+#    acceptAllCookies: PageController
 
 SilverStripe\CMS\Controllers\ContentController:
   extensions:
