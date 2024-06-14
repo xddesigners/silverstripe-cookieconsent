@@ -8,6 +8,7 @@ use XD\CookieConsent\Control\CookiePolicyPageController;
 use XD\CookieConsent\Model\CookiePolicyPage;
 use XD\CookieConsent\Forms\CookieConsentForm;
 use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\Core\Environment;
 use SilverStripe\CMS\Controllers\ContentController;
 use SilverStripe\Core\Extension;
 use SilverStripe\Core\Config\Config;
@@ -36,6 +37,26 @@ class ContentControllerExtension extends Extension
     {
 
         // if( CookieConsent::check() ) return;
+        // Initialize Google Consent Mode
+        if (Environment::getEnv('GTM_CODE') || Environment::getEnv('GA_CODE')) {
+            Requirements::insertHeadTags("
+                <script>
+                    // Define dataLayer and the gtag function.
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    
+                    // Set default consent to 'denied' as a placeholder
+                    // Determine actual values based on your own requirements
+                    gtag('consent', 'default', {
+                      'ad_storage': 'denied', // Marketing
+                      'ad_user_data': 'denied', // Marketing
+                      'ad_personalization': 'denied', // Marketing
+                      'analytics_storage': 'denied', // Analytics
+                    });
+                </script>"
+            );
+        }
+
 
         $module = ModuleLoader::getModule('xddesigners/silverstripe-cookieconsent');
         if (Config::inst()->get(CookieConsent::class, 'include_css')) {
