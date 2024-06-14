@@ -51,7 +51,7 @@ class ContentControllerExtension extends Extension
 
     public function CookieConsentForm()
     {
-        return CookieConsentForm::create($this, 'CookieConsentForm');
+        return CookieConsentForm::create($this->owner, 'CookieConsentForm');
     }
 
     /**
