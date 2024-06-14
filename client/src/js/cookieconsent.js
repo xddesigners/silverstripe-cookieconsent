@@ -1,7 +1,8 @@
 export default class CookieConsent {
     constructor() {
-        console.log('init cookie consent');
-        this.enableXHRMode();
+        // console.log('init cookie consent');
+        this.cookieName = 'CookieConsent';
+        this.cookieJar = {}; // Changed from [] to {}
 
         // Define dataLayer and the gtag function.
         window.dataLayer = window.dataLayer || [];
@@ -18,11 +19,10 @@ export default class CookieConsent {
         };
         gtag('consent', 'default', data);
 
-        this.cookieName = 'CookieConsent';
-        this.cookieJar = {}; // Changed from [] to {}
-
         this.updateConsent();
         this.pushToDataLayer();
+
+        this.enableXHRMode();
     }
 
     isSet() {
@@ -110,7 +110,7 @@ export default class CookieConsent {
         xhr.open('GET', url);
         xhr.addEventListener('load', function () {
             if (xhr.status >= 200 && xhr.status < 300) {
-                console.log('XHRRequest success');
+                // console.log('XHRRequest success');
                 _this.updateConsent();
                 _this.pushToDataLayer();
             } else {
