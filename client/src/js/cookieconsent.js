@@ -49,6 +49,8 @@ export default class CookieConsent {
     pushToDataLayer() {
         console.log('consent', this.consent);
 
+        // Add
+
         // Simplified direct reference to window.dataLayer
         if (typeof window.dataLayer !== 'undefined') {
             if (this.check('Necessary')) {
@@ -81,7 +83,7 @@ export default class CookieConsent {
 
     enableXHRMode() {
         const acceptAllLink = document.getElementById('accept-all-cookies');
-        const acceptNecesaryLink = document.getElementById('accept-necessary-cookies');
+        const acceptNecessaryLink = document.getElementById('accept-necessary-cookies');
         const cookiePopup = document.getElementById('cookie-consent-popup');
 
         if (cookiePopup) {
@@ -92,14 +94,18 @@ export default class CookieConsent {
 
             // show popup
             cookiePopup.classList.remove('cookie-consent-background--hidden');
-            acceptAllLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.sendXHRRequest(acceptAllLink.href);
-            });
-            acceptNecesaryLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.sendXHRRequest(acceptNecesaryLink.href);
-            });
+            if (acceptAllLink) {
+                acceptAllLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.sendXHRRequest(acceptAllLink.href);
+                });
+            }
+            if (acceptNecessaryLink) {
+                    acceptNecessaryLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.sendXHRRequest(acceptNecessaryLink.href);
+                });
+            }
         }
     }
 

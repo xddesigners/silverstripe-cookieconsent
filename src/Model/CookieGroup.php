@@ -5,6 +5,7 @@ namespace XD\CookieConsent\Model;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
 use SilverStripe\Forms\CheckboxSetField;
+use SilverStripe\ORM\ManyManyList;
 use XD\CookieConsent\CookieConsent;
 use XD\CookieConsent\Forms\CookieConsentCheckBoxField;
 use XD\CookieConsent\Gridfield\GridFieldConfigCookies;
@@ -33,6 +34,7 @@ use SilverStripe\Forms\TextField;
  * @property string Content
  * @property boolean Active
  * @method HasManyList Cookies()
+ * @method ManyManyList AutoEnabledCookieGroups()
  */
 class CookieGroup extends DataObject
 {
@@ -54,18 +56,22 @@ class CookieGroup extends DataObject
     ];
 
     private static $has_many = [
-        'Cookies' => CookieDescription::class . '.Group'
+        'Cookies' => CookieDescription::class . '.Group',
     ];
 
     private static $many_many = [
-        'ConsentModes' => ConsentMode::class
+        'AutoEnabledCookieGroups' => CookieGroup::class
     ];
+
+//    private static $many_many = [
+//        'ConsentModes' => ConsentMode::class
+//    ];
 
     private static $summary_fields = [
         'ConfigName' => 'ConfigName',
         'Title' => 'Title',
         'Active.Nice' => 'Active',
-        'ConsentModeList' => 'ConsentModes'
+//        'ConsentModeList' => 'ConsentModes'
     ];
 
     private static $translate = [
@@ -83,7 +89,8 @@ class CookieGroup extends DataObject
             CheckboxField::create('Active', _t(__CLASS__ . '.Active', 'Active')),
             TextField::create('Title', _t(__CLASS__ . '.Title', 'Title')),
             HtmlEditorField::create('Content', _t(__CLASS__ . '.Content', 'Content'))->setRows(5),
-            CheckboxSetField::create('ConsentModes', _t(__CLASS__ . '.ConsentModes', 'ConsentModes'), ConsentMode::get(), $this->ConsentModes()),
+            CheckboxSetField::create('AutoEnabledCookieGroups', _t(__CLASS__ . '.AutoEnabledCookieGroups', 'Auto enable other cookiegroups'), CookieGroup::get()->filter(['ID:not'=>$this->ID]), $this->AutoEnabledCookieGroups()),
+//            CheckboxSetField::create('ConsentModes', _t(__CLASS__ . '.ConsentModes', 'ConsentModes'), ConsentMode::get(), $this->ConsentModes()),
             CheckboxField::create('ShowCookies', _t(__CLASS__ . '.ShowCookies', 'Show cookie details')),
             GridField::create('Cookies', _t(__CLASS__ . '.Cookies', 'Cookies'), $this->Cookies(), GridFieldConfigCookies::create())
         ));

@@ -4,6 +4,7 @@ namespace XD\CookieConsent\Extensions;
 
 use Exception;
 use XD\CookieConsent\CookieConsent;
+use XD\CookieConsent\Model\CookieGroup;
 use XD\CookieConsent\Control\CookiePolicyPageController;
 use XD\CookieConsent\Model\CookiePolicyPage;
 use XD\CookieConsent\Forms\CookieConsentForm;
@@ -150,7 +151,20 @@ class ContentControllerExtension extends Extension
 
     public function acceptNecessaryCookies()
     {
+
         CookieConsent::grant(CookieConsent::NECESSARY);
+
+        /** @var CookieGroup $necessaryGroup */
+        $necessaryGroup = CookieGroup::get()->filter(['ConfigName' => CookieConsent::NECESSARY])->first();
+        if ($necessaryGroup) {
+            $autoEnabledGroups = $necessaryGroup->AutoEnabledCookieGroups();
+            if ($autoEnabledGroups->exists()) {
+                /** @var CookieGroup $autoEnabledGroup */
+                foreach ($autoEnabledGroups as $autoEnabledGroup) {
+                    CookieConsent::grant($autoEnabledGroup->ConfigName);
+                }
+            }
+        }
 
         if (Director::is_ajax()) {
             return "ok";
