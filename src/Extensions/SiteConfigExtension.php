@@ -3,6 +3,7 @@
 namespace XD\CookieConsent\Extensions;
 
 use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\CompositeField;
 use XD\CookieConsent\Model\CookieGroup;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\GridField\GridField;
@@ -21,7 +22,10 @@ class SiteConfigExtension extends DataExtension
     private static $db = [
         'CookieConsentActive' => 'Boolean',
         'CookieConsentTitle' => 'Varchar(255)',
-        'CookieConsentContent' => 'HTMLText'
+        'CookieConsentContent' => 'HTMLText',
+        'HideAcceptAllCookiesButton' => 'Boolean',
+        'HideOnlyNecessaryyButton' => 'Boolean',
+        'HideEditCookieSettingsButton' => 'Boolean',
     ];
 
     private static $translate = [
@@ -35,12 +39,17 @@ class SiteConfigExtension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        $fields->addFieldsToTab('Root.CookieConsent', array(
+        $fields->addFieldsToTab('Root.CookieConsent', [
             CheckboxField::create('CookieConsentActive', _t(__CLASS__ . '.CookieConsentActive', 'Cookie consent active')),
             TextField::create('CookieConsentTitle', _t(__CLASS__ . '.CookieConsentTitle', 'Cookie consent title')),
             HtmlEditorField::create('CookieConsentContent', _t(__CLASS__ . '.CookieConsentContent', 'Cookie consent content'))->setRows(6),
-            GridField::create('Cookies', 'Cookies', CookieGroup::get(), GridFieldConfig_RecordEditor::create())
-        ));
+            GridField::create('Cookies', 'Cookies', CookieGroup::get(), GridFieldConfig_RecordEditor::create()),
+            CompositeField::create([
+                CheckboxField::create('HideAcceptAllCookiesButton', _t(__CLASS__ . '.HideAcceptAllCookiesButton', 'Hide accept all cookies button')),
+                CheckboxField::create('HideOnlyNecessaryyButton', _t(__CLASS__ . '.HideOnlyNecessaryyButton', 'Hide necessary only cookies button')),
+                CheckboxField::create('HideEditCookieSettingsButton', _t(__CLASS__ . '.HideEditCookieSettingsButton', 'Hide edit cookies settings button')),
+            ])->setTitle(_t(__CLASS__ . '.PopupSettings', 'Popup settings')),
+        ]);
     }
 
     /**
