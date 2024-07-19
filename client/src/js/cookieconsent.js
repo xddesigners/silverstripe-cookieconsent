@@ -70,7 +70,11 @@ export default class CookieConsent {
             if (this.check('Marketing')) {
                 console.log('grant: ad_storage');
                 console.log('grant: personalization_storage');
+                console.log('grant: ad_user_data');
+                console.log('grant: ad_personalization');
                 gtag('consent', 'update', {
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
                     'ad_storage': 'granted',
                     'personalization_storage': 'granted',
                 });
