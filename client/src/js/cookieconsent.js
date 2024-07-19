@@ -16,6 +16,7 @@ export default class CookieConsent {
             'ad_user_data': 'denied', // Marketing
             'ad_personalization': 'denied', // Marketing
             'analytics_storage': 'denied', // Analytics
+            'personalization_storage': 'denied',
         };
         gtag('consent', 'default', data);
 
