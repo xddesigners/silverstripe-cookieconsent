@@ -21,16 +21,22 @@ class SiteConfigExtension extends DataExtension
 {
     private static $db = [
         'CookieConsentActive' => 'Boolean',
-        'CookieConsentTitle' => 'Varchar(255)',
+        'CookieConsentTitle' => 'Varchar',
         'CookieConsentContent' => 'HTMLText',
         'HideAcceptAllCookiesButton' => 'Boolean',
         'HideOnlyNecessaryyButton' => 'Boolean',
         'HideEditCookieSettingsButton' => 'Boolean',
+        'AcceptAllCookiesTitle' => 'Varchar',
+        'AcceptOnlyNecessaryCookiesTitle' => 'Varchar',
+        'EditCookieSettingsTitle' => 'Varchar',
     ];
 
     private static $translate = [
         'CookieConsentTitle',
-        'CookieConsentContent'
+        'CookieConsentContent',
+        'AcceptAllCookiesTitle',
+        'AcceptOnlyNecessaryCookiesTitle',
+        'EditCookieSettingsTitle',
     ];
 
     /**
@@ -48,6 +54,9 @@ class SiteConfigExtension extends DataExtension
                 CheckboxField::create('HideAcceptAllCookiesButton', _t(__CLASS__ . '.HideAcceptAllCookiesButton', 'Hide accept all cookies button')),
                 CheckboxField::create('HideOnlyNecessaryyButton', _t(__CLASS__ . '.HideOnlyNecessaryyButton', 'Hide necessary only cookies button')),
                 CheckboxField::create('HideEditCookieSettingsButton', _t(__CLASS__ . '.HideEditCookieSettingsButton', 'Hide edit cookies settings button')),
+                TextField::create('AcceptAllCookiesTitle', _t(__CLASS__ . '.AcceptAllCookiesTitle', 'Accept All Cookies Title')),
+                TextField::create('AcceptOnlyNecessaryCookiesTitle', _t(__CLASS__ . '.AcceptOnlyNecessaryCookiesTitle', 'Accept only necessary cookies title')),
+                TextField::create('EditCookieSettingsTitle', _t(__CLASS__ . '.EditCookieSettingsTitle', 'Edit cookiesettings title')),
             ])->setTitle(_t(__CLASS__ . '.PopupSettings', 'Popup settings')),
         ]);
     }
