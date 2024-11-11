@@ -6,24 +6,35 @@ export default class CookieConsent {
 
         // Define dataLayer and the gtag function.
         window.dataLayer = window.dataLayer || [];
+
+        // Check if gtag is defined by GTM and only redefine if it's not.
         if (typeof gtag !== 'function') {
             function gtag() {
                 dataLayer.push(arguments);
             }
         }
 
-        // Set default consent to 'denied' as a placeholder
-        let data = {
-            'ad_storage': 'denied', // Marketing
-            'ad_user_data': 'denied', // Marketing
-            'ad_personalization': 'denied', // Marketing
-            'analytics_storage': 'denied', // Analytics
-            'personalization_storage': 'denied',
+        // Ensure GTM is initialized and gtag is available
+        const checkGTM = () => {
+            if (typeof gtag === 'function') {
+                // Proceed with setting default consent
+                let data = {
+                    'ad_storage': 'denied', // Marketing
+                    'ad_user_data': 'denied', // Marketing
+                    'ad_personalization': 'denied', // Marketing
+                    'analytics_storage': 'denied', // Analytics
+                    'personalization_storage': 'denied',
+                };
+                gtag('consent', 'default', data);
+                this.updateConsent();
+                this.pushToDataLayer();
+            } else {
+                console.log('Waiting for GTM to load...');
+                setTimeout(checkGTM, 100); // Retry after 100ms
+            }
         };
-        gtag('consent', 'default', data);
 
-        this.updateConsent();
-        this.pushToDataLayer();
+        checkGTM(); // Start the check
 
         this.enableXHRMode();
     }
@@ -108,7 +119,7 @@ export default class CookieConsent {
                 });
             }
             if (acceptNecessaryLink) {
-                    acceptNecessaryLink.addEventListener('click', (e) => {
+                acceptNecessaryLink.addEventListener('click', (e) => {
                     e.preventDefault();
                     this.sendXHRRequest(acceptNecessaryLink.href);
                 });
