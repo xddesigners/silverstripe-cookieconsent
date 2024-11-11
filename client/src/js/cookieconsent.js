@@ -6,8 +6,10 @@ export default class CookieConsent {
 
         // Define dataLayer and the gtag function.
         window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
+        if (typeof gtag !== 'function') {
+            function gtag() {
+                dataLayer.push(arguments);
+            }
         }
 
         // Set default consent to 'denied' as a placeholder
@@ -53,7 +55,7 @@ export default class CookieConsent {
         // Add
 
         // Simplified direct reference to window.dataLayer
-        if (typeof window.dataLayer !== 'undefined') {
+        if (typeof gtag === 'function') {
             if (this.check('Necessary')) {
                 console.log('grant: functionality_storage');
                 gtag('consent', 'update', {
