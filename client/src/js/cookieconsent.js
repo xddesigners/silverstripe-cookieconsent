@@ -1,15 +1,13 @@
 export default class CookieConsent {
     constructor() {
-        console.log('init cookie consent');
+        // console.log('init cookie consent');
         this.cookieName = 'CookieConsent';
         this.cookieJar = {}; // Changed from [] to {}
 
         // Define dataLayer and the gtag function.
         window.dataLayer = window.dataLayer || [];
-        if (typeof gtag !== 'function') {
-            function gtag() {
-                dataLayer.push(arguments);
-            }
+        function gtag() {
+            dataLayer.push(arguments);
         }
 
         // Set default consent to 'denied' as a placeholder
@@ -55,7 +53,7 @@ export default class CookieConsent {
         // Add
 
         // Simplified direct reference to window.dataLayer
-        if (typeof gtag === 'function') {
+        if (typeof window.dataLayer !== 'undefined') {
             if (this.check('Necessary')) {
                 console.log('grant: functionality_storage');
                 gtag('consent', 'update', {
@@ -108,7 +106,7 @@ export default class CookieConsent {
                 });
             }
             if (acceptNecessaryLink) {
-                    acceptNecessaryLink.addEventListener('click', (e) => {
+                acceptNecessaryLink.addEventListener('click', (e) => {
                     e.preventDefault();
                     this.sendXHRRequest(acceptNecessaryLink.href);
                 });
