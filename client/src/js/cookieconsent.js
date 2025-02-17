@@ -48,9 +48,13 @@ export default class CookieConsent {
     }
 
     pushToDataLayer() {
-        console.log('consent', this.consent);
+        // check if gtag is defined
+        if (typeof gtag !== 'function') {
+            console.log('gtag not configured');
+            return;
+        }
 
-        // Add
+        console.log('consent', this.consent);
 
         // Simplified direct reference to window.dataLayer
         if (typeof window.dataLayer !== 'undefined') {
