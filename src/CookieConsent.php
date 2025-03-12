@@ -132,8 +132,8 @@ class CookieConsent
     {
         $consent = array_filter(array_unique(array_merge($consent, self::config()->get('required_groups'))));
         $domain = self::config()->get('domain') ?: null;
-        $secure = !Director::isDev();
-        $httpOnly = $secure;
+        $secure = !Director::isDev(); // only secure in live to allow cross domain cookies
+        $httpOnly = false; // allow js access
         Cookie::set(CookieConsent::COOKIE_NAME, implode(',', $consent), 730, '/', $domain, $secure, $httpOnly);
     }
 
