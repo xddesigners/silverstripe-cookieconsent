@@ -30,7 +30,7 @@ class CookieConsent
     public const PREFERENCES = 'Preferences';
 
     private static $required_groups = [
-        self::NECESSARY
+        self::NECESSARY,
     ];
 
     private static $cookies = [];
@@ -132,7 +132,9 @@ class CookieConsent
     {
         $consent = array_filter(array_unique(array_merge($consent, self::config()->get('required_groups'))));
         $domain = self::config()->get('domain') ?: null;
-        Cookie::set(CookieConsent::COOKIE_NAME, implode(',', $consent), 730, null, $domain, false, false);
+        $secure = !Director::isDev();
+        $httpOnly = $secure;
+        Cookie::set(CookieConsent::COOKIE_NAME, implode(',', $consent), 730, '/', $domain, $secure, $httpOnly);
     }
 
     /**
