@@ -35,6 +35,8 @@ class CookieConsent
 
     private static $cookies = [];
 
+    private static $same_site = Cookie::SAMESITE_LAX;
+
     private static $include_javascript = true;
 
     private static $include_css = true;
@@ -134,7 +136,15 @@ class CookieConsent
         $domain = self::config()->get('domain') ?: null;
         $secure = !Director::isDev(); // only secure in live to allow cross domain cookies
         $httpOnly = false; // allow js access
-        Cookie::set(CookieConsent::COOKIE_NAME, implode(',', $consent), 730, '/', $domain, $secure, $httpOnly);
+        // Cookie::set(CookieConsent::COOKIE_NAME, implode(',', $consent), 730, '/', $domain, $secure, $httpOnly);
+        setcookie('CookieConsent', implode(',', $consent), [
+            'expires' => time() + 365*24*60*60,
+            'path' => '/',
+            'domain' => $domain,
+            'secure' => $secure,
+            'httponly' => $httpOnly,
+            'samesite' => self::config()->get('same_site') ?: Cookie::SAMESITE_LAX,
+        ]);
     }
 
     /**
