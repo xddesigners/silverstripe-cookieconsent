@@ -99,10 +99,10 @@ class CookieGroup extends DataObject
         return $fields;
     }
 
-    public function getConsentModeList()
-    {
-        return implode(',', $this->ConsentModes()->column('Title')) ?: '-';
-    }
+//    public function getConsentModeList()
+//    {
+//        return implode(',', $this->ConsentModes()->column('Title')) ?: '-';
+//    }
 
     /**
      * Check if this group is the required default
@@ -152,14 +152,14 @@ class CookieGroup extends DataObject
                     $group->write();
                     DB::alteration_message(sprintf('Cookie group "%s" created', $groupName), 'created');
 
-                    $consentModes = !empty($groupSettings['consent_modes']) ? $groupSettings['consent_modes'] : [];
-                    if (!empty($consentModes)) {
-                        foreach ($consentModes as $consentMode) {
-                            $mode = ConsentMode::get()->filter(['Title' => $consentMode])->first();
-                            $group->ConsentModes()->add($mode);
-                            DB::alteration_message(sprintf('Cookie group enabled consentmode "%s"', $consentMode), 'created');
-                        }
-                    }
+//                    $consentModes = !empty($groupSettings['consent_modes']) ? $groupSettings['consent_modes'] : [];
+//                    if (!empty($consentModes)) {
+//                        foreach ($consentModes as $consentMode) {
+//                            $mode = ConsentMode::get()->filter(['Title' => $consentMode])->first();
+//                            $group->ConsentModes()->add($mode);
+//                            DB::alteration_message(sprintf('Cookie group enabled consentmode "%s"', $consentMode), 'created');
+//                        }
+//                    }
 
                 }
 

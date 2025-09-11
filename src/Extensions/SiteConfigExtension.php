@@ -5,7 +5,7 @@ namespace XD\CookieConsent\Extensions;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\CompositeField;
 use XD\CookieConsent\Model\CookieGroup;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TextField;
@@ -17,7 +17,7 @@ use SilverStripe\SiteConfig\SiteConfig;
  * Class SiteConfigExtension
  * @package XD\CookieConsent
  */
-class SiteConfigExtension extends DataExtension
+class SiteConfigExtension extends Extension
 {
     private static $db = [
         'CookieConsentActive' => 'Boolean',
