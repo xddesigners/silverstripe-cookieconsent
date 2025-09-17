@@ -36,7 +36,6 @@ class ContentControllerExtension extends Extension
      */
     public function onAfterInit()
     {
-
         // if( CookieConsent::check() ) return;
         // Initialize Google Consent Mode
         if (Environment::getEnv('GTM_CODE') || Environment::getEnv('GA_CODE')) {
@@ -45,7 +44,7 @@ class ContentControllerExtension extends Extension
                     // Define dataLayer and the gtag function.
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
-                    
+
                     // Set default consent to 'denied' as a placeholder
                     // Determine actual values based on your own requirements
                     gtag('consent', 'default', {
