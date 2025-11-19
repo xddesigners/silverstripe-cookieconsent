@@ -19,7 +19,10 @@
         "expose": [
             "client/dist/js",
             "client/dist/styles"
-        ]
+        ],
+        "branch-alias": {
+            "dev-main": "6.x-dev"
+        }
     },
     "autoload": {
         "psr-4": {
