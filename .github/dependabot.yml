@@ -1,0 +1,27 @@
+# Dependabot configuration.
+#
+# The npm side is now a lean, build-time-only toolchain (Vite + Sass); this
+# module ships no runtime npm dependencies. Updates are grouped into a single
+# weekly PR to keep noise low while still receiving security fixes. Composer
+# tracks the Silverstripe framework/module dependencies.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      build-tooling:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      silverstripe:
+        patterns:
+          - "*"

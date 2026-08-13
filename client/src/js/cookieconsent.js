@@ -1,3 +1,5 @@
+import '../styles/cookieconsent.scss';
+
 export default class CookieConsent {
     constructor() {
         // console.log('init cookie consent');
