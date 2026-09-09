@@ -38,8 +38,6 @@ XD\CookieConsent\CookieConsent:
       active: true
     Analytics:
       active: true
-      consent_modes:
-        - analytics_storage
       cookies:
         local:
           - _ga
@@ -69,10 +67,6 @@ XD\CookieConsent\CookieConsent:
     #        - player
     Marketing:
       active: true
-      consent_modes:
-        - ad_storage
-        - ad_user_data
-        - ad_personalization
       # cookies:
       #      _ads_linkedin_com:
       #        - BizoID

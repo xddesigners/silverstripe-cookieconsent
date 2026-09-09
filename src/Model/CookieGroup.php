@@ -63,15 +63,10 @@ class CookieGroup extends DataObject
         'AutoEnabledCookieGroups' => CookieGroup::class
     ];
 
-//    private static $many_many = [
-//        'ConsentModes' => ConsentMode::class
-//    ];
-
     private static $summary_fields = [
         'ConfigName' => 'ConfigName',
         'Title' => 'Title',
         'Active.Nice' => 'Active',
-//        'ConsentModeList' => 'ConsentModes'
     ];
 
     private static $translate = [
@@ -90,7 +85,6 @@ class CookieGroup extends DataObject
             TextField::create('Title', _t(__CLASS__ . '.Title', 'Title')),
             HtmlEditorField::create('Content', _t(__CLASS__ . '.Content', 'Content'))->setRows(5),
             CheckboxSetField::create('AutoEnabledCookieGroups', _t(__CLASS__ . '.AutoEnabledCookieGroups', 'Auto enable other cookiegroups'), CookieGroup::get()->filter(['ID:not'=>$this->ID]), $this->AutoEnabledCookieGroups()),
-//            CheckboxSetField::create('ConsentModes', _t(__CLASS__ . '.ConsentModes', 'ConsentModes'), ConsentMode::get(), $this->ConsentModes()),
             CheckboxField::create('ShowCookies', _t(__CLASS__ . '.ShowCookies', 'Show cookie details')),
             GridField::create('Cookies', _t(__CLASS__ . '.Cookies', 'Cookies'), $this->Cookies(), GridFieldConfigCookies::create())
         ));
@@ -98,11 +92,6 @@ class CookieGroup extends DataObject
         $this->extend('updateCMSFields', $fields);
         return $fields;
     }
-
-//    public function getConsentModeList()
-//    {
-//        return implode(',', $this->ConsentModes()->column('Title')) ?: '-';
-//    }
 
     /**
      * Check if this group is the required default
@@ -151,16 +140,6 @@ class CookieGroup extends DataObject
 
                     $group->write();
                     DB::alteration_message(sprintf('Cookie group "%s" created', $groupName), 'created');
-
-//                    $consentModes = !empty($groupSettings['consent_modes']) ? $groupSettings['consent_modes'] : [];
-//                    if (!empty($consentModes)) {
-//                        foreach ($consentModes as $consentMode) {
-//                            $mode = ConsentMode::get()->filter(['Title' => $consentMode])->first();
-//                            $group->ConsentModes()->add($mode);
-//                            DB::alteration_message(sprintf('Cookie group enabled consentmode "%s"', $consentMode), 'created');
-//                        }
-//                    }
-
                 }
 
                 if (isset($groupSettings['cookies'])) {

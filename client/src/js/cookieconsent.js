@@ -2,7 +2,6 @@ import '../styles/cookieconsent.scss';
 
 export default class CookieConsent {
     constructor() {
-        // console.log('init cookie consent');
         this.cookieName = 'CookieConsent';
         this.cookieJar = {}; // Changed from [] to {}
 
@@ -52,33 +51,30 @@ export default class CookieConsent {
     pushToDataLayer() {
         // check if gtag is defined
         if (typeof gtag !== 'function') {
-            console.log('gtag not configured');
+            console.info('[CookieConsent] gtag not configured');
             return;
         }
 
-        console.log('consent', this.consent);
+        console.info('[CookieConsent] consent:', this.consent);
 
         // Simplified direct reference to window.dataLayer
         if (typeof window.dataLayer !== 'undefined') {
             if (this.check('Necessary')) {
-                console.log('grant: functionality_storage');
+                console.info('[CookieConsent] grant: functionality_storage');
                 gtag('consent', 'update', {
                     'functionality_storage': 'granted'
                 });
                 window.dataLayer.push({ 'event': 'cookieconsent_preferences' });
             }
             if (this.check('Analytics')) {
-                console.log('grant: analytics_storage');
+                console.info('[CookieConsent] grant: analytics_storage');
                 gtag('consent', 'update', {
                     'analytics_storage': 'granted'
                 });
                 window.dataLayer.push({ 'event': 'cookieconsent_analytics' });
             }
             if (this.check('Marketing')) {
-                console.log('grant: ad_storage');
-                console.log('grant: personalization_storage');
-                console.log('grant: ad_user_data');
-                console.log('grant: ad_personalization');
+                console.info('[CookieConsent] grant: ad_storage, personalization_storage, ad_user_data, ad_personalization');
                 gtag('consent', 'update', {
                     'ad_user_data': 'granted',
                     'ad_personalization': 'granted',
@@ -88,7 +84,7 @@ export default class CookieConsent {
                 window.dataLayer.push({ 'event': 'cookieconsent_marketing' });
             }
         } else {
-            console.log('dataLayer undefined');
+            console.info('[CookieConsent] dataLayer undefined');
         }
     }
 
@@ -127,15 +123,15 @@ export default class CookieConsent {
         xhr.open('GET', url);
         xhr.addEventListener('load', function () {
             if (xhr.status >= 200 && xhr.status < 300) {
-                // console.log('XHRRequest success');
+                console.info('[CookieConsent] consent saved');
                 _this.updateConsent();
                 _this.pushToDataLayer();
             } else {
-                console.log('XHRRequest completed but was not successful. Status:', xhr.status);
+                console.warn('[CookieConsent] request not successful. Status:', xhr.status);
             }
         });
         xhr.addEventListener('error', function () {
-            console.error('XHRRequest failed.');
+            console.error('[CookieConsent] request failed.');
         });
         xhr.send();
         cookiePopup.remove();
