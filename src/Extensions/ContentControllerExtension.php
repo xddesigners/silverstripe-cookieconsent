@@ -16,6 +16,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Manifest\ModuleLoader;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Security;
+use SilverStripe\Security\SecurityToken;
 use SilverStripe\View\Requirements;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
@@ -122,6 +123,10 @@ class ContentControllerExtension extends Extension
 
     public function acceptAllCookies()
     {
+        if (!SecurityToken::inst()->checkRequest($this->owner->getRequest())) {
+            return $this->owner->httpError(400, 'Invalid CSRF token');
+        }
+
         CookieConsent::grantAll();
 
         if (Director::is_ajax()) {
@@ -145,11 +150,17 @@ class ContentControllerExtension extends Extension
 
     public function getAcceptAllCookiesLink()
     {
-        return Controller::join_links($this->getOwner()->Link(), 'acceptAllCookies');
+        // Tokenised so this state-changing action is CSRF-protected (a cross-site GET/<img> lacks the token).
+        return SecurityToken::inst()->addToUrl(
+            Controller::join_links($this->getOwner()->Link(), 'acceptAllCookies')
+        );
     }
 
     public function acceptNecessaryCookies()
     {
+        if (!SecurityToken::inst()->checkRequest($this->owner->getRequest())) {
+            return $this->owner->httpError(400, 'Invalid CSRF token');
+        }
 
         CookieConsent::grant(CookieConsent::NECESSARY);
 
@@ -187,7 +198,10 @@ class ContentControllerExtension extends Extension
 
     public function getAcceptNecessaryCookiesLink()
     {
-        return Controller::join_links($this->getOwner()->Link(), 'acceptNecessaryCookies');
+        // Tokenised so this state-changing action is CSRF-protected (a cross-site GET/<img> lacks the token).
+        return SecurityToken::inst()->addToUrl(
+            Controller::join_links($this->getOwner()->Link(), 'acceptNecessaryCookies')
+        );
     }
 
 }

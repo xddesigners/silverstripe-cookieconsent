@@ -21,7 +21,7 @@
                     </a>
                 </div>
             <% end_if %>
-            <% if not $SiteConfig.HideOnlyNecessaryyButton %>
+            <% if not $SiteConfig.HideOnlyNecessaryButton %>
                 <div class="col-md col-sm-12">
                     <a class="btn btn-outline-gray-600 btn-sm w-100 mb-md-0 mb-2" href="$AcceptNecessaryCookiesLink"
                        rel="nofollow" id="accept-necessary-cookies">

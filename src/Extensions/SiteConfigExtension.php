@@ -11,6 +11,9 @@ use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
@@ -24,7 +27,7 @@ class SiteConfigExtension extends Extension
         'CookieConsentTitle' => 'Varchar',
         'CookieConsentContent' => 'HTMLText',
         'HideAcceptAllCookiesButton' => 'Boolean',
-        'HideOnlyNecessaryyButton' => 'Boolean',
+        'HideOnlyNecessaryButton' => 'Boolean',
         'HideEditCookieSettingsButton' => 'Boolean',
         'AcceptAllCookiesTitle' => 'Varchar',
         'AcceptOnlyNecessaryCookiesTitle' => 'Varchar',
@@ -52,7 +55,7 @@ class SiteConfigExtension extends Extension
             GridField::create('Cookies', 'Cookies', CookieGroup::get(), GridFieldConfig_RecordEditor::create()),
             CompositeField::create([
                 CheckboxField::create('HideAcceptAllCookiesButton', _t(__CLASS__ . '.HideAcceptAllCookiesButton', 'Hide accept all cookies button')),
-                CheckboxField::create('HideOnlyNecessaryyButton', _t(__CLASS__ . '.HideOnlyNecessaryyButton', 'Hide necessary only cookies button')),
+                CheckboxField::create('HideOnlyNecessaryButton', _t(__CLASS__ . '.HideOnlyNecessaryButton', 'Hide necessary only cookies button')),
                 CheckboxField::create('HideEditCookieSettingsButton', _t(__CLASS__ . '.HideEditCookieSettingsButton', 'Hide edit cookies settings button')),
                 TextField::create('AcceptAllCookiesTitle', _t(__CLASS__ . '.AcceptAllCookiesTitle', 'Accept All Cookies Title')),
                 TextField::create('AcceptOnlyNecessaryCookiesTitle', _t(__CLASS__ . '.AcceptOnlyNecessaryCookiesTitle', 'Accept only necessary cookies title')),
@@ -87,6 +90,22 @@ class SiteConfigExtension extends Extension
         if (empty($config->CookieConsentContent)) {
             $config->CookieConsentContent = _t(__CLASS__ . '.DefaultContent', '<p>We use cookies to personalise content, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media and analytics partners, who may combine it with other information that you have provided to them or that they have collected from your use of their services.</p>');
             $changed = true;
+        }
+
+        // One-off migration: this field used to be the misspelled column `HideOnlyNecessaryyButton` (double y).
+        // dev/build does not drop removed columns, so copy the old value into the corrected
+        // `HideOnlyNecessaryButton` field once, then retire the old column (SS renames it to _obsolete_…, so the
+        // data is kept and this does not run again). Backward compatible: no data loss, no manual migration.
+        $table = DataObject::getSchema()->tableName(SiteConfig::class);
+        if (DB::get_schema()->hasField($table, 'HideOnlyNecessaryyButton')) {
+            $legacy = SQLSelect::create('"HideOnlyNecessaryyButton"', "\"$table\"", ['"ID"' => $config->ID])
+                ->execute()
+                ->value();
+            if ($legacy !== null && !$config->HideOnlyNecessaryButton) {
+                $config->HideOnlyNecessaryButton = (bool) $legacy;
+                $changed = true;
+            }
+            DB::get_schema()->dontRequireField($table, 'HideOnlyNecessaryyButton');
         }
 
         // Only persist when we actually populated a default (avoids a write on every dev/build).
