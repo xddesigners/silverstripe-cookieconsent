@@ -75,9 +75,11 @@ class SiteConfigExtension extends Extension
 
         $changed = false;
 
+        // Initial value populated once at install (empty field only). Uses dedicated .DefaultTitle/.DefaultContent
+        // lang keys (separate from the .CookieConsentTitle/.CookieConsentContent field labels, so the default is
+        // not tied to the CMS label text). No new DB fields — only the existing columns get their initial value;
+        // per-locale values are handled by Fluent/AutoTranslate on those columns afterwards.
         if (empty($config->CookieConsentTitle)) {
-            // Dedicated .DefaultTitle key (not .CookieConsentTitle, which is the CMS field label) so the
-            // default is locale-aware via the lang files without overwriting the field label.
             $config->CookieConsentTitle = _t(__CLASS__ . '.DefaultTitle', 'Cookies...');
             $changed = true;
         }
