@@ -26,11 +26,6 @@ class CookiePolicyPageController extends PageController
     public function init()
     {
         parent::init();
-//        $module = ModuleLoader::getModule('xd/cookieconsent');
-//        Requirements::block($module->getResource('javascript/dist/cookieconsentpopup.js')->getRelativePath());
-//        if (Config::inst()->get(CookieConsent::class, 'include_css')) {
-//            Requirements::css($module->getResource('css/cookieconsent.css')->getRelativePath());
-//        }
     }
 
     /**
@@ -47,7 +42,7 @@ class CookiePolicyPageController extends PageController
         if ($this->Content && $form = $this->Form()) {
             $hasLocation = stristr($this->Content, '$CookieConsentForm');
             if ($hasLocation) {
-                $content = preg_replace('/(<p[^>]*>)?\\$CookieConsentForm(<\\/p>)?/i', $form->forTemplate(), $this->Content);
+                $content = str_replace('$CookieConsentForm', $form->forTemplate(), $this->Content);
 
                 // Remove leading whitespace.  This is an edge case, but if the module silverstripers/markdown is
                 // installed, the form fails to render.  The reason is that 1) The HTML for the form is injected into

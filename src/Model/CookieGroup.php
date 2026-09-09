@@ -215,7 +215,7 @@ class CookieGroup extends DataObject
      */
     public function canDelete($member = null)
     {
-        $cookieConfig = CookieConsent::config()->get('cookies');
+        $cookieConfig = CookieConsent::config()->get('cookie_groups');
         return !isset($cookieConfig[$this->ConfigName]);
     }
 }

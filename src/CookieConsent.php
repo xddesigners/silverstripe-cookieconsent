@@ -3,7 +3,6 @@
 namespace XD\CookieConsent;
 
 use XD\CookieConsent\Model\CookieGroup;
-use Exception;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\Cookie;
@@ -33,8 +32,6 @@ class CookieConsent
         self::NECESSARY,
     ];
 
-    private static $cookies = [];
-
     private static $same_site = Cookie::SAMESITE_LAX;
 
     private static $include_javascript = true;
@@ -48,17 +45,13 @@ class CookieConsent
      *
      * @param $group
      * @return bool
-     * @throws Exception
      */
     public static function check($group = CookieConsent::NECESSARY)
     {
         $cookies = self::config()->get('cookie_groups');
         if (!isset($cookies[$group])) {
-            throw new Exception(sprintf(
-                "The cookie group '%s' is not configured. You need to add it to the cookies config on %s",
-                $group,
-                self::class
-            ));
+            // Fail safe: an unknown/undefined group has no consent
+            return false;
         }
 
         $consent = self::getConsent();
@@ -111,7 +104,9 @@ class CookieConsent
             }
         }
 
-        unset($consent[$key]);
+        if ($key !== false) {
+            unset($consent[$key]);
+        }
         self::setConsent($consent);
     }
 
@@ -134,10 +129,9 @@ class CookieConsent
     {
         $consent = array_filter(array_unique(array_merge($consent, self::config()->get('required_groups'))));
         $domain = self::config()->get('domain') ?: null;
-        $secure = !Director::isDev(); // only secure in live to allow cross domain cookies
+        $secure = Director::is_https(); // only send the cookie over https
         $httpOnly = false; // allow js access
-        // Cookie::set(CookieConsent::COOKIE_NAME, implode(',', $consent), 730, '/', $domain, $secure, $httpOnly);
-        setcookie('CookieConsent', implode(',', $consent), [
+        setcookie(self::COOKIE_NAME, implode(',', $consent), [
             'expires' => time() + 365*24*60*60,
             'path' => '/',
             'domain' => $domain,

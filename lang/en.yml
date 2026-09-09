@@ -16,7 +16,7 @@ en:
     Marketing: 'Marketing'
     Marketing_Content: '<p>Marketing cookies are used to track the success of our advertising campaigns.</p>'
     Preferences: 'Preferences'
-    Prefrences_Content: '<p>With preferential cookies we’re able to customize your user experience.</p>'
+    Preferences_Content: '<p>With preferential cookies we’re able to customize your user experience.</p>'
   XD\CookieConsent\Forms\CookieConsentForm:
     Save: 'Save'
     FormMessage: 'Your preferences have been saved'
@@ -30,8 +30,8 @@ en:
     Title: 'Terms and Conditions'
     Content: '<p>You can fill this page with your terms and conditions</p>'
   XD\CookieConsent\Extensions\SiteConfigExtension:
-    Title: 'This website uses cookies'
-    Content: '<p>We use Google’s cookies to analyze activities on our website and to improve our pages. With this information we also see how you use our website and which pages you find interesting. After your permission, we place cookies from social media partners for social media and advertising purposes. If desired, you can change your preferences under ‘Manage cookie settings’.</p>'
+    DefaultTitle: 'Cookies...'
+    DefaultContent: '<p>We use cookies to personalise content, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media and analytics partners, who may combine it with other information that you have provided to them or that they have collected from your use of their services.</p>'
 
   # general cookie content
   CookieConsent_local:

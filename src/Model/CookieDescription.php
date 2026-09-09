@@ -2,7 +2,6 @@
 
 namespace XD\CookieConsent\Model;
 
-use XD\CookieConsent\CookieConsent;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Tab;
@@ -71,29 +70,4 @@ class CookieDescription extends DataObject
         $this->extend('updateCMSFields', $fields);
         return $fields;
     }
-
-    /**
-     * Cookies without a config definition can be deleted
-     *
-     * @param null $member
-     * @return bool
-     */
-//    public function canDelete($member = null)
-//    {
-//        $cookieConfig = Config::inst()->get(CookieConsent::class, 'cookies');
-//
-//        $found = false;
-//        foreach ($cookieConfig as $group => $domains) {
-//            if ($found) break;
-//            if( is_array($domains) ) {
-//                foreach ($domains as $cookies) {
-//                    if ($found) break;
-//                    if(  )
-//                    $found = in_array($this->ConfigName, $cookies);
-//                }
-//            }
-//        }
-//
-//        return !$found;
-//    }
 }

@@ -2,8 +2,6 @@
 
 namespace XD\CookieConsent\Forms;
 
-use SilverStripe\Forms\CompositeField;
-use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\LiteralField;
 use XD\CookieConsent\CookieConsent;
 use XD\CookieConsent\Model\CookieGroup;

@@ -68,15 +68,27 @@ class SiteConfigExtension extends Extension
      */
     public function requireDefaultRecords()
     {
-        if ($config = SiteConfig::current_site_config()) {
-            if (empty($config->CookieConsentTitle)) {
-                $config->CookieConsentTitle = _t(__CLASS__ . '.CookieConsentTitle', 'This website uses cookies');
-            }
+        $config = SiteConfig::current_site_config();
+        if (!$config) {
+            return;
+        }
 
-            if (empty($config->CookieConsentContent)) {
-                $config->CookieConsentContent = _t(__CLASS__ . '.CookieConsentContent', '<p>We use cookies to personalise content, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services. You consent to our cookies if you continue to use our website.</p>');
-            }
+        $changed = false;
 
+        if (empty($config->CookieConsentTitle)) {
+            // Dedicated .DefaultTitle key (not .CookieConsentTitle, which is the CMS field label) so the
+            // default is locale-aware via the lang files without overwriting the field label.
+            $config->CookieConsentTitle = _t(__CLASS__ . '.DefaultTitle', 'Cookies...');
+            $changed = true;
+        }
+
+        if (empty($config->CookieConsentContent)) {
+            $config->CookieConsentContent = _t(__CLASS__ . '.DefaultContent', '<p>We use cookies to personalise content, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media and analytics partners, who may combine it with other information that you have provided to them or that they have collected from your use of their services.</p>');
+            $changed = true;
+        }
+
+        // Only persist when we actually populated a default (avoids a write on every dev/build).
+        if ($changed) {
             $config->write();
         }
     }

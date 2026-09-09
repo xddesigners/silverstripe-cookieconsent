@@ -20,5 +20,5 @@
             <% end_loop %>
             </tbody>
         </table>
+    </div>
 <% end_if %>
-</div>

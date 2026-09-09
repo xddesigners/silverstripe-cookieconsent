@@ -34,6 +34,8 @@ XD\CookieConsent\CookieConsent:
     #        - mkjs_group_id
     #        - mkjs_user_id
     #        - optimizelyEndUserId
+    Preferences:
+      active: true
     Analytics:
       active: true
       consent_modes:

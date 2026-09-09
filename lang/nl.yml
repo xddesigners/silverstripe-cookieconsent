@@ -17,7 +17,7 @@ nl:
     Marketing: 'Marketing'
     Marketing_Content: '<p>Met marketing cookies volgen wij het succes van onze online campagnes.</p>'
     Preferences: 'Voorkeuren'
-    Prefrences_Content: '<p>Met voorkeur cookies zijn wij in staat om uw gebruikerservaring te passen.</p>'
+    Preferences_Content: '<p>Met voorkeur cookies zijn wij in staat om uw gebruikerservaring te passen.</p>'
   XD\CookieConsent\Forms\CookieConsentForm:
     Save: 'Opslaan'
     FormMessage: 'Uw voorkeuren zijn opgeslagen'
@@ -31,8 +31,8 @@ nl:
     Title: 'Algemene voorwaarden'
     Content: '<p>U kunt deze pagina vullen met uw algemene voorwaarden</p>'
   XD\CookieConsent\Extensions\SiteConfigExtension:
-    Title: 'Deze website maakt gebruik van cookies'
-    Content: '<p>We zetten cookies van Google in om activiteiten op onze website te analyseren en onze pagina’s te verbeteren. Hiermee zien we ook hoe je onze website gebruikt en welke pagina’s je interessant vindt. Na je toestemming plaatsen we cookies van social media partners voor socialmedia- en advertentiedoeleinden. Indien gewenst kun je jouw voorkeuren wijzigen onder ‘Cookie-instellingen beheren’.</p>'
+    DefaultTitle: 'Cookies...'
+    DefaultContent: '<p>We gebruiken cookies om de inhoud te personaliseren, om functies voor sociale media aan te bieden en om ons verkeer te analyseren. We delen ook informatie over jouw gebruik van onze site met onze sociale media- en analysepartners, die deze kunnen combineren met andere informatie die u aan hen hebt verstrekt of die zij hebben verzameld door jouw gebruik van hun diensten.</p>'
 
   # general cookie content
   CookieConsent_local:
