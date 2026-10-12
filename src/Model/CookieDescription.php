@@ -15,12 +15,12 @@ use SilverStripe\Forms\TextField;
  * @package XD
  * @subpackage CookieConsent
  *
- * @property string ConfigName
- * @property string Title
- * @property string Provider
- * @property string Purpose
- * @property string Expiry
- * @property string Type
+ * @property string $ConfigName
+ * @property string $Title
+ * @property string $Provider
+ * @property string $Purpose
+ * @property string $Expiry
+ * @property string $Type
  *
  * @method CookieGroup Group()
  */

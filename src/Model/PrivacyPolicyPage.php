@@ -2,7 +2,7 @@
 
 namespace XD\CookieConsent\Model;
 
-use \Page;
+use Page;
 use XD\CookieConsent\CookieConsent;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DB;
@@ -24,13 +24,11 @@ class PrivacyPolicyPage extends Page
     public function populateDefaults()
     {
         $this->Title = _t(__CLASS__ . '.Title', 'Privacy Policy');
-        $this->Content = _t(__CLASS__ .'.Content', '<p>Default privacy policy</p>');
+        $this->Content = _t(__CLASS__ . '.Content', '<p>Default privacy policy</p>');
         parent::populateDefaults();
+        return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     public function requireDefaultRecords()
     {
         parent::requireDefaultRecords();

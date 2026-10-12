@@ -2,7 +2,7 @@
 
 namespace XD\CookieConsent\Model;
 
-use \Page;
+use Page;
 use XD\CookieConsent\CookieConsent;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\DB;
@@ -24,13 +24,11 @@ class TermsAndConditionsPage extends Page
     public function populateDefaults()
     {
         $this->Title = _t(__CLASS__ . '.Title', 'Terms and Conditions');
-        $this->Content = _t(__CLASS__ .'.Content', '<p>Default terms and conditions</p>');
+        $this->Content = _t(__CLASS__ . '.Content', '<p>Default terms and conditions</p>');
         parent::populateDefaults();
+        return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     public function requireDefaultRecords()
     {
         parent::requireDefaultRecords();

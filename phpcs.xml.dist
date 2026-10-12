@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ruleset name="cookieconsent">
+    <description>PSR-12 coding standard for XD Cookie Consent.</description>
+
+    <file>src</file>
+    <file>tests</file>
+
+    <arg name="colors"/>
+    <arg value="np"/>
+
+    <rule ref="PSR12">
+        <!-- Line length is advisory for this module; do not fail on it. -->
+        <exclude name="Generic.Files.LineLength"/>
+        <!-- Silverstripe convention: template-exposed / interface methods use
+             PascalCase (HasConsent, Form, get_template_global_variables). -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+    </rule>
+</ruleset>

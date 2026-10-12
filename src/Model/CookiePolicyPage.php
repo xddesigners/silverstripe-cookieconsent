@@ -2,7 +2,7 @@
 
 namespace XD\CookieConsent\Model;
 
-use \Page;
+use Page;
 use XD\CookieConsent\CookieConsent;
 use XD\CookieConsent\Control\CookiePolicyPageController;
 use SilverStripe\Core\Config\Config;
@@ -30,13 +30,11 @@ class CookiePolicyPage extends Page
     public function populateDefaults()
     {
         $this->Title = _t(__CLASS__ . '.Title', 'Cookie Policy');
-        $this->Content = _t(__CLASS__ .'.Content', '<p>$CookieConsentForm</p><p>[cookiegrouptable group="Necessary"]</p><p>[cookiegrouptable group="Analytics"]</p><p>[cookiegrouptable group="Marketing"]</p><p>[cookiegrouptable group="Preferences"]</p>');
+        $this->Content = _t(__CLASS__ . '.Content', '<p>$CookieConsentForm</p><p>[cookiegrouptable group="Necessary"]</p><p>[cookiegrouptable group="Analytics"]</p><p>[cookiegrouptable group="Marketing"]</p><p>[cookiegrouptable group="Preferences"]</p>');
         parent::populateDefaults();
+        return $this;
     }
 
-    /**
-     * @throws Exception
-     */
     public function requireDefaultRecords()
     {
         parent::requireDefaultRecords();
@@ -51,13 +49,13 @@ class CookiePolicyPage extends Page
 
     public function getCookieGroups()
     {
-        return CookieGroup::get()->filter(['Active'=>1]);
+        return CookieGroup::get()->filter(['Active' => 1]);
     }
 
     /**
      * Get the active cookie policy page
      *
-     * @return CookiePolicyPage|DataObject
+     * @return CookiePolicyPage|null
      */
     public static function instance()
     {

@@ -1,68 +1,157 @@
 # Silverstripe Cookie Consent
-GDPR compliant cookie bar and consent checker
+
+GDPR/ePrivacy cookie consent for Silverstripe — a configurable consent framework,
+not just a cookie bar: a category taxonomy, a CMS-managed cookie declaration, a
+server + JS **consent-state API** other code reads, true **script/tag blocking**
+until consent, **Google Consent Mode v2** signalling, an **immutable consent log**
+for accountability, re-consent/versioning, and an accessible, theme-overridable
+banner + preferences centre.
+
+Core-independent: it runs on any Silverstripe 6 site.
 
 ## Installation
-Install the module trough composer:
 ```bash
 composer require xddesigners/silverstripe-cookieconsent
-``` 
+```
 
-Include the popup template in your base Page.ss
+Include the banner + preferences centre in your base `Page.ss`:
 ```html
 <% include CookieConsent %>
 ```
 
-## Configuration
-You can configure the cookies and cookie groups trough the yml config. You need to configure by provider, for providers the dots are converted to underscores e.g. ads.marketingcompany.com becomes ads_marketingcompany_com.
+Add a revoke link anywhere (e.g. the footer) to reopen the preferences centre:
+```html
+<a href="#" data-consent-reopen>Cookie preferences</a>
+```
 
-By configuring cookies trough yml you can check for consent in your code and make the necessary changes e.g. require the analytics or other cookies or skip placing them.
+## Category taxonomy
+The module speaks the industry-standard categories **`necessary` / `preferences` /
+`statistics` / `marketing`**, mapped onto the stored group names via config. The
+defaults keep full backwards compatibility with the legacy
+`Necessary / Analytics / Marketing / Preferences` groups:
 
-The texts for the configured cookies are editable trough the Site Config, here other cookies can also be added by CMS users. 
-For example if a site user decides to embed a Youtube video he or she can specify the cookies that are placed by Youtube.
-I reccomend the following three groups to be created, these have default content, of course you are free to configure groups as you see fit.
 ```yaml
 XD\CookieConsent\CookieConsent:
-  cookies:
-    Necessary:
-      local:
-        - CookieConsent
-        - ShowPopUp
-    Marketing:
-      ads_marketingcompany_com:
-        - _track
-    Analytics:
-      local:
-        - _ga
-        - _gid
+  category_aliases:
+    necessary: Necessary
+    preferences: Preferences
+    statistics: Analytics
+    marketing: Marketing
 ```
 
-This module comes with some default content for cookies we've encountered before. If you want to set default content for these cookies yourself that is possible trough the lang files. If you have cookie descriptions that are not in this module, contributions to the lang files are much appreciated! Translations are managed trough [Transifex](https://www.transifex.com/xd/cookie-consent).
+So `ConsentState::has('statistics')` resolves to the legacy `Analytics` group —
+you can adopt the new names without migrating existing cookies or config.
 
-The files are structured as such:
-```yaml
-en:
-  CookieConsent_{provider}:
-    {cookie}_Purpose: 'Cookie description'
-    {cookie}_Expiry: 'Cookie expire time'
-  # for cookies from your own domain:
-  CookieConsent_local:
-    PHPSESSID_Purpose: 'Session'
-    PHPSESSID_Expiry: 'Session'
-  # for cookies from an external domain:
-  CookieConsent_ads_marketingcompany_com:
-    _track_Purpose: 'Cookie description'
-    _track_Expiry: 'Cookie expire time'
-```
+## The consent-state API (the integration contract)
+Source of truth is the server-readable `CookieConsent` cookie (unchanged format),
+with versioning in a sidecar `CookieConsentMeta` cookie.
 
-Then you can check for consent in your code by calling
+**PHP**
 ```php
-if (CookieConsent::check('Analytics')) {
-    // include google analytics
+use XD\CookieConsent\ConsentState;
+
+if (ConsentState::has('statistics')) {
+    // load analytics
 }
+ConsentState::granted();     // ['necessary', 'statistics']
+ConsentState::needsPrompt(); // show the banner?
+ConsentState::version();     // the version the visitor consented under
+```
+`CookieConsent::check('Analytics')` is kept as a backwards-compatible alias.
+
+**Templates** — usable in any template, including header/footer shells:
+```html
+<% if $HasConsent('statistics') %>
+    <!-- analytics markup -->
+<% end_if %>
 ```
 
-You can also configure the requirement of the default js and css. 
-Make sure you combine at least the javascript in you bundle if you chose not to require by default!
+**JavaScript**
+```js
+if (window.XDConsent.has('marketing')) { /* … */ }
+window.XDConsent.grantAll();
+window.XDConsent.open();        // open the preferences centre
+document.addEventListener('consentchange', (e) => {
+    console.log(e.detail.categories); // ['necessary', 'statistics']
+});
+```
+
+## Script / tag blocking (prior blocking)
+Signalling consent is not the same as *not loading* a tag. Emit third-party tags
+as inert scripts that the module activates once their category is granted (on load
+and on every `consentchange`):
+
+```php
+use XD\CookieConsent\View\ConsentScript;
+
+$MyTag       = ConsentScript::inline("gtag('event', 'x');", 'statistics');
+$MyExternal  = ConsentScript::src('https://example.com/pixel.js', 'marketing', ['async' => true]);
+```
+Any script carrying `type="text/plain" data-consent-category="…"` is handled,
+including vendor snippets a CMS editor marks by hand. External scripts park their
+URL in `data-src` (promoted to `src` on activation) so preload scanners don't fetch
+them early.
+
+**Click-to-load embeds** for iframes (YouTube, Maps, …):
+```
+[consent_embed src="https://www.youtube.com/embed/xyz" category="marketing" title="Video"]
+```
+
+## Google Consent Mode v2
+The four signals (`ad_storage`, `analytics_storage`, `ad_user_data`,
+`ad_personalization`) are defaulted to `denied` before any tag and updated on
+consent. The signal map is driven from each group's `consent_modes` config:
+
+```yaml
+XD\CookieConsent\CookieConsent:
+  cookie_groups:
+    Analytics:
+      active: true
+      consent_modes: [analytics_storage]
+    Marketing:
+      active: true
+      consent_modes: [ad_storage, ad_user_data, ad_personalization]
+```
+The server emits the default-denied block when a `GTM_CODE` or `GA_CODE` env var is
+set; the JS emits the `update` + dataLayer events (`cookieconsent_statistics`, …).
+
+## Consent log (accountability)
+Every decision writes an immutable `ConsentRecord` (granted categories, consent
+version, method, source, locale, user-agent and a **pseudonymous** consent id — no
+IP, no PII), viewable under the **Cookie consent** CMS section. Records cannot be
+edited, deleted or created by hand.
+
+Retention is off by default; opt in and run the prune task:
+```yaml
+XD\CookieConsent\ConsentState:
+  log_retention_days: 730
+```
+```bash
+vendor/bin/sake tasks:CookieConsent-PruneConsentRecords
+```
+Disable logging entirely with `log_consent: false`.
+
+## Re-consent / versioning
+```yaml
+XD\CookieConsent\ConsentState:
+  consent_version: 1          # bump to force a site-wide re-prompt
+  consent_lifetime_days: 183  # ~6 months (Dutch AP); up to 13 months (FR max)
+  reject_suppress_days: 365   # don't re-ask for ~a year after an explicit reject
+```
+
+## Accessibility
+The banner and preferences centre are a proper `role="dialog"` with a focus trap,
+`Esc` to close, labelled controls, visible focus and `prefers-reduced-motion`
+support. Non-essential toggles are never pre-ticked, reject is as prominent as
+accept, and content is never hidden behind the banner (no cookie wall).
+
+## Theming / overriding
+The default banner is framework-neutral and token-driven. Override any `--cc-*`
+custom property from your theme, or override the template entirely at
+`templates/Includes/CookieConsent.ss`. The JS contract ids
+(`#cookie-consent-popup`, `#accept-all-cookies`, `#accept-necessary-cookies`) and
+the `data-consent-*` hooks must be preserved in a custom template.
+
 ```yaml
 XD\CookieConsent\CookieConsent:
   include_javascript: true
@@ -70,48 +159,53 @@ XD\CookieConsent\CookieConsent:
   create_default_pages: true
 ```
 
-### Enable XHR mode
-When you use static publishing, you'll want to enable XHR mode. XHR mode accepts the cookies trough an xhr request and shows/hides the consent popup with the help of some javascript.
+## Cookie declaration content
+Cookie purposes/expiry are editable in the CMS and translatable. You can also set
+defaults through the lang files; see `lang/en.yml`. Translations managed through
+[Transifex](https://www.transifex.com/xd/cookie-consent). Ships `en`, `nl`, `de`,
+`fr`, `es`, `it`.
 
-In your yml config set `xhr_mode` to `true`
 ```yaml
-XD\CookieConsent\CookieConsent:
-  xhr_mode: true
+en:
+  CookieConsent_ads_marketingcompany_com:
+    _track_Purpose: 'Cookie description'
+    _track_Expiry: 'Cookie expire time'
 ```
 
-In your javascript, you can make use of the utility class. This handles the xhr request and visibility of the popup:
-```js
-import CookieConsent from '../vendor/xd/cookieconsent/javascript/src/cookieconsent';
-const consent = new CookieConsent();
-consent.enableXHRMode();
+## Soft integrations
+When `statistics` is granted the module mirrors the state onto a session key
+(default `analytics_consent`) so analytics/marketing modules can gate on it with no
+coupling. Configure with:
+```yaml
+XD\CookieConsent\ConsentState:
+  session_keys:
+    statistics: analytics_consent
 ```
 
-### Include assets in your bundle
-If you want to include the scss or js in your own bundle you can do that by:
-```js
-// Import the CookieConsent utility 
-import CookieConsent from '../vendor/xd/cookieconsent/javascript/src/cookieconsent';
+## Upgrading from 6.0.x
+No code changes required. The `XD\CookieConsent\…` API, the `CookieConsent` cookie,
+the `<% include CookieConsent %>` include and the `[cookiegrouptable]` shortcode are
+all preserved. Notable changes:
+- The default banner is restyled and gains an in-banner preferences centre. If your
+  theme overrides `templates/Includes/CookieConsent.ss`, keep the JS contract ids
+  above. Add a `data-consent-reopen` link to let visitors revoke consent.
+- The hide-reject button options are no longer applied (reject is always shown).
+- Prefer `$HasConsent('statistics')` / `ConsentState::has()` over the legacy
+  `$CookieConsent('Analytics')` helper in new templates.
 
-const consent = new CookieConsent();
+## Static publishing (XHR)
+The banner enhances progressively: with JS, accept/reject/save happen over XHR
+without a reload; without JS they fall back to the server actions and the policy
+page. The `window.CookieConsent` class and its `enableXHRMode()` method are retained.
 
-// This tool let's you check for cookie consent in your js files before you apply any cookies
-if (consent.check('Marketing')) {
-  // add marketing cookie
-}
+## Default pages
+On `dev/build` the module can create a CookiePolicyPage, PrivacyPolicyPage and
+TermsAndConditionsPage. Disable with `create_default_pages: false`.
 
-// If you use Google Tag Manager this tool can also push the consent into the dataLayer object
-consent.pushToDataLayer();
-```
+## Roadmap
+Geo-gating (EU/EEA-only banner), CCPA/CPRA "Do Not Sell or Share" + Global Privacy
+Control (`Sec-GPC`) honouring, and automatic cookie scanning are planned but not yet
+shipped. Full IAB TCF v2.2 is out of scope.
 
-For the scss you can just import the scss file
-```scss
-@import "cookieconsent/scss/cookieconsent";
-```
-Make sure the relative paths to the files match your use case.
-
-## Default Pages
-This module also sets up 3 default pages on running dev/build. 
-If you want to prevent that behaviour you should disable the `create_default_pages` config setting.
-The pages created are a CookiePolicyPage, PrivacyPolicyPage and TermsAndConditionsPage and are filled with bare bones content for each of the page types.
-_Of course it is your or your CMS users responsibility to alter these texts to make them fitting to your use case!_
-
+## License
+BSD-3-Clause.

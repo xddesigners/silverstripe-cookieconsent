@@ -1,0 +1,7 @@
+parameters:
+    level: 4
+    paths:
+        - src
+    # cambis/silverstan is auto-registered via phpstan/extension-installer.
+    bootstrapFiles:
+        - vendor/silverstripe/framework/src/includes/constants.php

@@ -98,7 +98,11 @@ class CookieConsentForm extends Form
 
     public function getAcceptAllCookiesLink()
     {
-        return Controller::curr()->getAcceptAllCookiesLink();
+        // getAcceptAllCookiesLink() is provided on the content controller by
+        // ContentControllerExtension; dispatch dynamically + guard for safety.
+        $controller = Controller::curr();
+        $method = 'getAcceptAllCookiesLink';
+        return ($controller && $controller->hasMethod($method)) ? $controller->$method() : '';
     }
 
     /**

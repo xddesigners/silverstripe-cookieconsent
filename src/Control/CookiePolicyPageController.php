@@ -10,7 +10,7 @@ use SilverStripe\ORM\FieldType\DBField;
 
 /**
  * Class CookiePolicyPageController
- * @mixin CookiePolicyPage
+ * @mixin \XD\CookieConsent\Model\CookiePolicyPage
  */
 class CookiePolicyPageController extends PageController
 {
@@ -21,7 +21,7 @@ class CookiePolicyPageController extends PageController
     /**
      * Make sure we don't trigger the cookie consent popup on this page
      *
-     * @return HTTPResponse|void
+     * @return void
      */
     public function init()
     {
@@ -44,16 +44,17 @@ class CookiePolicyPageController extends PageController
      */
     public function index(HTTPRequest $request)
     {
-        if ($this->Content && $form = $this->Form()) {
+        $form = $this->Form();
+        if ($this->Content) {
             $hasLocation = stristr($this->Content, '$CookieConsentForm');
             if ($hasLocation) {
-                $content = preg_replace('/(<p[^>]*>)?\\$CookieConsentForm(<\\/p>)?/i', $form->forTemplate(), $this->Content);
+                $content = (string) preg_replace('/(<p[^>]*>)?\\$CookieConsentForm(<\\/p>)?/i', $form->forTemplate(), $this->Content);
 
                 // Remove leading whitespace.  This is an edge case, but if the module silverstripers/markdown is
                 // installed, the form fails to render.  The reason is that 1) The HTML for the form is injected into
                 // the output as HTMLText object  2) And HTMLText that has 4 or more spaces as a prefix is treated as
                 // being code content.  This broke the form rendering
-                $content = implode("\n", array_map('trim', explode("\n", $content) ?? ''));
+                $content = implode("\n", array_map('trim', explode("\n", $content)));
 
                 return array(
                     'Content' => DBField::create_field('HTMLText', $content),
