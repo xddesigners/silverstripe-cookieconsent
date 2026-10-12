@@ -1,13 +1,27 @@
 en:
   XD\CookieConsent\CookieConsent:
-    ManageCookies: 'Settings'
+    ManageCookies: 'Manage preferences'
     AcceptAllCookies: 'Accept all cookies'
     AcceptNecessaryCookies: 'Necessary cookies'
+    RejectAllCookies: 'Reject non-essential'
+    PreferencesTitle: 'Cookie preferences'
+    SavePreferences: 'Save preferences'
+    Close: 'Close'
+    AlwaysOn: 'always on'
   XD\CookieConsent\Shortcode\CookieGroupTable:
     Title: 'Name cookie'
     Provider: 'Placed by'
     Purpose: 'Purpose'
     Expiry: 'Expiry'
+  XD\CookieConsent\Shortcode\ConsentEmbed:
+    Blocked: 'This content is blocked until you accept {category} cookies.'
+    Load: 'Load content'
+    Always: 'Always allow'
+  XD\CookieConsent\Admin\ConsentAdmin:
+    MENUTITLE: 'Cookie consent'
+  XD\CookieConsent\Model\ConsentRecord:
+    SINGULARNAME: 'Consent record'
+    PLURALNAME: 'Consent records'
   XD\CookieConsent\Model\CookieGroup:
     Necessary: 'Necessary'
     Necessary_Content: '<p>Necessary cookies make sure the site is able to run and includes your site preferences.</p>'
@@ -32,6 +46,14 @@ en:
   XD\CookieConsent\Extensions\SiteConfigExtension:
     Title: 'This website uses cookies'
     Content: '<p>We use Google’s cookies to analyze activities on our website and to improve our pages. With this information we also see how you use our website and which pages you find interesting. After your permission, we place cookies from social media partners for social media and advertising purposes. If desired, you can change your preferences under ‘Manage cookie settings’.</p>'
+    CookieConsentActive: 'Cookie consent active'
+    CookieConsentTitle: 'Cookie consent title'
+    CookieConsentContent: 'Cookie consent content'
+    AcceptAllCookiesTitle: 'Accept all cookies title'
+    AcceptOnlyNecessaryCookiesTitle: 'Reject / only necessary button title'
+    EditCookieSettingsTitle: 'Manage preferences button title'
+    PopupSettings: 'Button labels'
+    RejectParityNote: 'Rejecting is kept as prominent as accepting (EDPB requirement). The legacy "hide button" options have been removed; the reject and manage controls are always shown.'
 
   # general cookie content
   CookieConsent_local:

@@ -1,0 +1,69 @@
+fr:
+  XD\CookieConsent\CookieConsent:
+    ManageCookies: 'Gérer les préférences'
+    AcceptAllCookies: 'Accepter tous les cookies'
+    AcceptNecessaryCookies: 'Cookies nécessaires'
+    RejectAllCookies: 'Refuser les cookies non essentiels'
+    PreferencesTitle: 'Préférences de cookies'
+    SavePreferences: 'Enregistrer les préférences'
+    Close: 'Fermer'
+    AlwaysOn: 'toujours actif'
+    Settings: 'Paramètres'
+  XD\CookieConsent\Shortcode\CookieGroupTable:
+    Title: 'Nom du cookie'
+    Provider: 'Déposé par'
+    Purpose: 'Objectif'
+    Expiry: 'Durée de conservation'
+  XD\CookieConsent\Shortcode\ConsentEmbed:
+    Blocked: 'Ce contenu est bloqué tant que vous n’acceptez pas les cookies {category}.'
+    Load: 'Charger le contenu'
+    Always: 'Toujours autoriser'
+  XD\CookieConsent\Admin\ConsentAdmin:
+    MENUTITLE: 'Consentement aux cookies'
+  XD\CookieConsent\Model\ConsentRecord:
+    SINGULARNAME: 'Enregistrement de consentement'
+    PLURALNAME: 'Enregistrements de consentement'
+  XD\CookieConsent\Model\CookieGroup:
+    Necessary: 'Nécessaires'
+    Necessary_Content: '<p>Les cookies nécessaires permettent au site de fonctionner et conservent vos préférences.</p>'
+    Analytics: 'Statistiques'
+    Analytics_Content: '<p>Les cookies statistiques nous permettent de suivre l’utilisation du site afin d’améliorer nos pages.</p>'
+    Marketing: 'Marketing'
+    Marketing_Content: '<p>Les cookies marketing sont utilisés pour mesurer l’efficacité de nos campagnes publicitaires.</p>'
+    Preferences: 'Préférences'
+    Prefrences_Content: '<p>Les cookies de préférences nous permettent de personnaliser votre expérience.</p>'
+  XD\CookieConsent\Forms\CookieConsentForm:
+    Save: 'Enregistrer'
+    FormMessage: 'Vos préférences ont été enregistrées'
+  XD\CookieConsent\Model\CookiePolicyPage:
+    Title: 'Politique en matière de cookies'
+  XD\CookieConsent\Model\PrivacyPolicyPage:
+    Title: 'Politique de confidentialité'
+    Content: '<p>Vous pouvez remplir cette page avec votre politique de confidentialité</p>'
+  XD\CookieConsent\Model\TermsAndConditionsPage:
+    Title: 'Conditions générales'
+    Content: '<p>Vous pouvez remplir cette page avec vos conditions générales</p>'
+  XD\CookieConsent\Extensions\SiteConfigExtension:
+    Title: 'Ce site utilise des cookies'
+    Content: '<p>Nous utilisons des cookies pour analyser l’activité sur notre site et améliorer nos pages. Après votre consentement, nous déposons des cookies de partenaires à des fins de médias sociaux et de publicité. Si vous le souhaitez, vous pouvez modifier vos préférences dans « Gérer les préférences ».</p>'
+    CookieConsentActive: 'Consentement aux cookies actif'
+    CookieConsentTitle: 'Titre du consentement aux cookies'
+    CookieConsentContent: 'Contenu du consentement aux cookies'
+    AcceptAllCookiesTitle: 'Libellé « Tout accepter »'
+    AcceptOnlyNecessaryCookiesTitle: 'Libellé « Refuser / seulement nécessaires »'
+    EditCookieSettingsTitle: 'Libellé « Gérer les préférences »'
+    PopupSettings: 'Libellés des boutons'
+    RejectParityNote: 'Le refus reste aussi visible que l’acceptation (exigence du CEPD). Les anciennes options de masquage de boutons ont été supprimées.'
+  CookieConsent_local:
+    PHPSESSID_Purpose: 'Session'
+    PHPSESSID_Expiry: 'Session'
+    CookieConsent_Purpose: 'Enregistre vos préférences de cookies'
+    CookieConsent_Expiry: '2 mois'
+    FluentLocale_Purpose: 'Enregistre votre préférence de langue'
+    FluentLocale_Expiry: '2 mois'
+    _ga_Purpose: 'Statistiques'
+    _ga_Expiry: '2 ans'
+    _gat_Purpose: 'Statistiques'
+    _gat_Expiry: '24 heures'
+    _gid_Purpose: 'Statistiques'
+    _gid_Expiry: '24 heures'

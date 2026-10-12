@@ -1,0 +1,69 @@
+de:
+  XD\CookieConsent\CookieConsent:
+    ManageCookies: 'Einstellungen verwalten'
+    AcceptAllCookies: 'Alle Cookies akzeptieren'
+    AcceptNecessaryCookies: 'Notwendige Cookies'
+    RejectAllCookies: 'Nicht notwendige ablehnen'
+    PreferencesTitle: 'Cookie-Einstellungen'
+    SavePreferences: 'Einstellungen speichern'
+    Close: 'Schließen'
+    AlwaysOn: 'immer aktiv'
+    Settings: 'Einstellungen'
+  XD\CookieConsent\Shortcode\CookieGroupTable:
+    Title: 'Name des Cookies'
+    Provider: 'Platziert von'
+    Purpose: 'Zweck'
+    Expiry: 'Speicherdauer'
+  XD\CookieConsent\Shortcode\ConsentEmbed:
+    Blocked: 'Dieser Inhalt ist blockiert, bis Sie {category}-Cookies akzeptieren.'
+    Load: 'Inhalt laden'
+    Always: 'Immer erlauben'
+  XD\CookieConsent\Admin\ConsentAdmin:
+    MENUTITLE: 'Cookie-Zustimmung'
+  XD\CookieConsent\Model\ConsentRecord:
+    SINGULARNAME: 'Zustimmungseintrag'
+    PLURALNAME: 'Zustimmungseinträge'
+  XD\CookieConsent\Model\CookieGroup:
+    Necessary: 'Notwendig'
+    Necessary_Content: '<p>Notwendige Cookies sorgen dafür, dass die Website funktioniert, und speichern Ihre Website-Einstellungen.</p>'
+    Analytics: 'Analyse'
+    Analytics_Content: '<p>Mit Analyse-Cookies können wir die Nutzung der Website nachvollziehen und die Informationen verbessern.</p>'
+    Marketing: 'Marketing'
+    Marketing_Content: '<p>Marketing-Cookies werden verwendet, um den Erfolg unserer Werbekampagnen zu messen.</p>'
+    Preferences: 'Präferenzen'
+    Prefrences_Content: '<p>Mit Präferenz-Cookies können wir Ihr Nutzererlebnis anpassen.</p>'
+  XD\CookieConsent\Forms\CookieConsentForm:
+    Save: 'Speichern'
+    FormMessage: 'Ihre Einstellungen wurden gespeichert'
+  XD\CookieConsent\Model\CookiePolicyPage:
+    Title: 'Cookie-Richtlinie'
+  XD\CookieConsent\Model\PrivacyPolicyPage:
+    Title: 'Datenschutzerklärung'
+    Content: '<p>Sie können diese Seite mit Ihrer Datenschutzerklärung füllen</p>'
+  XD\CookieConsent\Model\TermsAndConditionsPage:
+    Title: 'Allgemeine Geschäftsbedingungen'
+    Content: '<p>Sie können diese Seite mit Ihren allgemeinen Geschäftsbedingungen füllen</p>'
+  XD\CookieConsent\Extensions\SiteConfigExtension:
+    Title: 'Diese Website verwendet Cookies'
+    Content: '<p>Wir verwenden Cookies, um Aktivitäten auf unserer Website zu analysieren und unsere Seiten zu verbessern. Nach Ihrer Zustimmung setzen wir Cookies von Partnern für Social-Media- und Werbezwecke. Bei Bedarf können Sie Ihre Einstellungen unter „Einstellungen verwalten" ändern.</p>'
+    CookieConsentActive: 'Cookie-Zustimmung aktiv'
+    CookieConsentTitle: 'Titel der Cookie-Zustimmung'
+    CookieConsentContent: 'Inhalt der Cookie-Zustimmung'
+    AcceptAllCookiesTitle: 'Beschriftung „Alle akzeptieren"'
+    AcceptOnlyNecessaryCookiesTitle: 'Beschriftung „Ablehnen / nur notwendig"'
+    EditCookieSettingsTitle: 'Beschriftung „Einstellungen verwalten"'
+    PopupSettings: 'Beschriftungen der Schaltflächen'
+    RejectParityNote: 'Das Ablehnen bleibt genauso sichtbar wie das Akzeptieren (EDSA-Vorgabe). Die alten Optionen zum Ausblenden von Schaltflächen wurden entfernt.'
+  CookieConsent_local:
+    PHPSESSID_Purpose: 'Sitzung'
+    PHPSESSID_Expiry: 'Sitzung'
+    CookieConsent_Purpose: 'Speichert Ihre Cookie-Einstellungen'
+    CookieConsent_Expiry: '2 Monate'
+    FluentLocale_Purpose: 'Speichert Ihre Spracheinstellung'
+    FluentLocale_Expiry: '2 Monate'
+    _ga_Purpose: 'Statistik'
+    _ga_Expiry: '2 Jahre'
+    _gat_Purpose: 'Statistik'
+    _gat_Expiry: '24 Stunden'
+    _gid_Purpose: 'Statistik'
+    _gid_Expiry: '24 Stunden'

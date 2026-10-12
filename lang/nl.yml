@@ -1,14 +1,28 @@
 nl:
   XD\CookieConsent\CookieConsent:
-    ManageCookies: 'Instellingen'
+    ManageCookies: 'Voorkeuren beheren'
     AcceptAllCookies: 'Alle cookies accepteren'
     AcceptNecessaryCookies: 'Noodzakelijke cookies'
+    RejectAllCookies: 'Niet-noodzakelijke weigeren'
+    PreferencesTitle: 'Cookievoorkeuren'
+    SavePreferences: 'Voorkeuren opslaan'
+    Close: 'Sluiten'
+    AlwaysOn: 'altijd aan'
     Settings: 'Instellingen'
   XD\CookieConsent\Shortcode\CookieGroupTable:
     Title: 'Naam cookie'
     Provider: 'Geplaatst door'
     Purpose: 'Doel'
     Expiry: 'Maximale bewaartermijn'
+  XD\CookieConsent\Shortcode\ConsentEmbed:
+    Blocked: 'Deze inhoud is geblokkeerd totdat je {category}-cookies accepteert.'
+    Load: 'Inhoud laden'
+    Always: 'Altijd toestaan'
+  XD\CookieConsent\Admin\ConsentAdmin:
+    MENUTITLE: 'Cookie consent'
+  XD\CookieConsent\Model\ConsentRecord:
+    SINGULARNAME: 'Toestemmingsregistratie'
+    PLURALNAME: 'Toestemmingsregistraties'
   XD\CookieConsent\Model\CookieGroup:
     Necessary: 'Noodzakelijk'
     Necessary_Content: '<p>Noodzakelijke cookies worden gebruikt om de site optimaal te laten functioneren en bevatten jouw site voorkeuren.</p>'
@@ -33,6 +47,14 @@ nl:
   XD\CookieConsent\Extensions\SiteConfigExtension:
     Title: 'Deze website maakt gebruik van cookies'
     Content: '<p>We zetten cookies van Google in om activiteiten op onze website te analyseren en onze pagina’s te verbeteren. Hiermee zien we ook hoe je onze website gebruikt en welke pagina’s je interessant vindt. Na je toestemming plaatsen we cookies van social media partners voor socialmedia- en advertentiedoeleinden. Indien gewenst kun je jouw voorkeuren wijzigen onder ‘Cookie-instellingen beheren’.</p>'
+    CookieConsentActive: 'Cookie consent actief'
+    CookieConsentTitle: 'Cookie consent titel'
+    CookieConsentContent: 'Cookie consent inhoud'
+    AcceptAllCookiesTitle: 'Titel knop alle cookies accepteren'
+    AcceptOnlyNecessaryCookiesTitle: 'Titel knop weigeren / alleen noodzakelijk'
+    EditCookieSettingsTitle: 'Titel knop voorkeuren beheren'
+    PopupSettings: 'Knoplabels'
+    RejectParityNote: 'Weigeren blijft even prominent als accepteren (EDPB-vereiste). De oude "knop verbergen"-opties zijn verwijderd; de weiger- en beheerknoppen worden altijd getoond.'
 
   # general cookie content
   CookieConsent_local:

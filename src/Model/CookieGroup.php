@@ -21,7 +21,6 @@ use SilverStripe\Forms\Tab;
 use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\TextField;
 
-
 /**
  * CookieGroup that holds type of cookies
  * You can add these groups trough the yml config
@@ -29,10 +28,10 @@ use SilverStripe\Forms\TextField;
  * @package XD
  * @subpackage CookieConsent
  *
- * @property string ConfigName
- * @property string Title
- * @property string Content
- * @property boolean Active
+ * @property string $ConfigName
+ * @property string $Title
+ * @property string $Content
+ * @property bool $Active
  * @method HasManyList Cookies()
  * @method ManyManyList AutoEnabledCookieGroups()
  */
@@ -89,7 +88,7 @@ class CookieGroup extends DataObject
             CheckboxField::create('Active', _t(__CLASS__ . '.Active', 'Active')),
             TextField::create('Title', _t(__CLASS__ . '.Title', 'Title')),
             HtmlEditorField::create('Content', _t(__CLASS__ . '.Content', 'Content'))->setRows(5),
-            CheckboxSetField::create('AutoEnabledCookieGroups', _t(__CLASS__ . '.AutoEnabledCookieGroups', 'Auto enable other cookiegroups'), CookieGroup::get()->filter(['ID:not'=>$this->ID]), $this->AutoEnabledCookieGroups()),
+            CheckboxSetField::create('AutoEnabledCookieGroups', _t(__CLASS__ . '.AutoEnabledCookieGroups', 'Auto enable other cookiegroups'), CookieGroup::get()->filter(['ID:not' => $this->ID]), $this->AutoEnabledCookieGroups()),
 //            CheckboxSetField::create('ConsentModes', _t(__CLASS__ . '.ConsentModes', 'ConsentModes'), ConsentMode::get(), $this->ConsentModes()),
             CheckboxField::create('ShowCookies', _t(__CLASS__ . '.ShowCookies', 'Show cookie details')),
             GridField::create('Cookies', _t(__CLASS__ . '.Cookies', 'Cookies'), $this->Cookies(), GridFieldConfigCookies::create())
@@ -115,13 +114,35 @@ class CookieGroup extends DataObject
     }
 
     /**
+     * Whether this group currently has consent (for the preferences-centre
+     * toggle state). Non-throwing.
+     *
+     * @return bool
+     */
+    public function isGranted()
+    {
+        return $this->isRequired() || CookieConsent::hasConsent($this->ConfigName);
+    }
+
+    /**
+     * The standard taxonomy category this group maps to (necessary/preferences/
+     * statistics/marketing), for data-consent-category attributes.
+     *
+     * @return string
+     */
+    public function getStandardCategory()
+    {
+        return CookieConsent::toStandardCategory($this->ConfigName);
+    }
+
+    /**
      * Create a Cookie Consent checkbox based on the current cookie group
      *
      * @return CookieConsentCheckBoxField
      */
     public function createField()
     {
-        return new CookieConsentCheckBoxField($this);
+        return CookieConsentCheckBoxField::create($this);
     }
 
     /**
@@ -160,7 +181,6 @@ class CookieGroup extends DataObject
 //                            DB::alteration_message(sprintf('Cookie group enabled consentmode "%s"', $consentMode), 'created');
 //                        }
 //                    }
-
                 }
 
                 if (isset($groupSettings['cookies'])) {
@@ -210,7 +230,7 @@ class CookieGroup extends DataObject
     /**
      * Make deletable if not defined in config
      *
-     * @param null $member
+     * @param \SilverStripe\Security\Member|null $member
      * @return bool
      */
     public function canDelete($member = null)

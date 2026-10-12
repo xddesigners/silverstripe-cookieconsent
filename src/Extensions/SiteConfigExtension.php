@@ -4,6 +4,7 @@ namespace XD\CookieConsent\Extensions;
 
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\CompositeField;
+use SilverStripe\Forms\LiteralField;
 use XD\CookieConsent\Model\CookieGroup;
 use SilverStripe\Core\Extension;
 use SilverStripe\Forms\GridField\GridField;
@@ -51,33 +52,32 @@ class SiteConfigExtension extends Extension
             HtmlEditorField::create('CookieConsentContent', _t(__CLASS__ . '.CookieConsentContent', 'Cookie consent content'))->setRows(6),
             GridField::create('Cookies', 'Cookies', CookieGroup::get(), GridFieldConfig_RecordEditor::create()),
             CompositeField::create([
-                CheckboxField::create('HideAcceptAllCookiesButton', _t(__CLASS__ . '.HideAcceptAllCookiesButton', 'Hide accept all cookies button')),
-                CheckboxField::create('HideOnlyNecessaryyButton', _t(__CLASS__ . '.HideOnlyNecessaryyButton', 'Hide necessary only cookies button')),
-                CheckboxField::create('HideEditCookieSettingsButton', _t(__CLASS__ . '.HideEditCookieSettingsButton', 'Hide edit cookies settings button')),
                 TextField::create('AcceptAllCookiesTitle', _t(__CLASS__ . '.AcceptAllCookiesTitle', 'Accept All Cookies Title')),
-                TextField::create('AcceptOnlyNecessaryCookiesTitle', _t(__CLASS__ . '.AcceptOnlyNecessaryCookiesTitle', 'Accept only necessary cookies title')),
-                TextField::create('EditCookieSettingsTitle', _t(__CLASS__ . '.EditCookieSettingsTitle', 'Edit cookiesettings title')),
-            ])->setTitle(_t(__CLASS__ . '.PopupSettings', 'Popup settings')),
+                TextField::create('AcceptOnlyNecessaryCookiesTitle', _t(__CLASS__ . '.AcceptOnlyNecessaryCookiesTitle', 'Reject / only necessary button title')),
+                TextField::create('EditCookieSettingsTitle', _t(__CLASS__ . '.EditCookieSettingsTitle', 'Manage preferences button title')),
+                LiteralField::create('RejectParityNote', '<p class="message notice">' . _t(
+                    __CLASS__ . '.RejectParityNote',
+                    'Rejecting is kept as prominent as accepting (EDPB requirement). The legacy "hide button" options have been removed; the reject and manage controls are always shown.'
+                ) . '</p>'),
+            ])->setTitle(_t(__CLASS__ . '.PopupSettings', 'Button labels')),
         ]);
     }
 
     /**
-     * Set the defaults this way beacause the SiteConfig is probably already created
-     *
-     * @throws \SilverStripe\ORM\ValidationException
+     * Set the defaults this way because the SiteConfig is probably already created
      */
     public function requireDefaultRecords()
     {
-        if ($config = SiteConfig::current_site_config()) {
-            if (empty($config->CookieConsentTitle)) {
-                $config->CookieConsentTitle = _t(__CLASS__ . '.CookieConsentTitle', 'This website uses cookies');
-            }
+        $config = SiteConfig::current_site_config();
 
-            if (empty($config->CookieConsentContent)) {
-                $config->CookieConsentContent = _t(__CLASS__ . '.CookieConsentContent', '<p>We use cookies to personalise content, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services. You consent to our cookies if you continue to use our website.</p>');
-            }
-
-            $config->write();
+        if (empty($config->CookieConsentTitle)) {
+            $config->CookieConsentTitle = _t(__CLASS__ . '.CookieConsentTitle', 'This website uses cookies');
         }
+
+        if (empty($config->CookieConsentContent)) {
+            $config->CookieConsentContent = _t(__CLASS__ . '.CookieConsentContent', '<p>We use cookies to personalise content, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services. You consent to our cookies if you continue to use our website.</p>');
+        }
+
+        $config->write();
     }
 }

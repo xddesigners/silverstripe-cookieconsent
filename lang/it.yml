@@ -1,0 +1,69 @@
+it:
+  XD\CookieConsent\CookieConsent:
+    ManageCookies: 'Gestisci preferenze'
+    AcceptAllCookies: 'Accetta tutti i cookie'
+    AcceptNecessaryCookies: 'Cookie necessari'
+    RejectAllCookies: 'Rifiuta i non essenziali'
+    PreferencesTitle: 'Preferenze dei cookie'
+    SavePreferences: 'Salva preferenze'
+    Close: 'Chiudi'
+    AlwaysOn: 'sempre attivi'
+    Settings: 'Impostazioni'
+  XD\CookieConsent\Shortcode\CookieGroupTable:
+    Title: 'Nome del cookie'
+    Provider: 'Impostato da'
+    Purpose: 'Finalità'
+    Expiry: 'Conservazione'
+  XD\CookieConsent\Shortcode\ConsentEmbed:
+    Blocked: 'Questo contenuto è bloccato finché non accetti i cookie {category}.'
+    Load: 'Carica contenuto'
+    Always: 'Consenti sempre'
+  XD\CookieConsent\Admin\ConsentAdmin:
+    MENUTITLE: 'Consenso ai cookie'
+  XD\CookieConsent\Model\ConsentRecord:
+    SINGULARNAME: 'Registrazione del consenso'
+    PLURALNAME: 'Registrazioni del consenso'
+  XD\CookieConsent\Model\CookieGroup:
+    Necessary: 'Necessari'
+    Necessary_Content: '<p>I cookie necessari consentono al sito di funzionare e memorizzano le tue preferenze.</p>'
+    Analytics: 'Statistiche'
+    Analytics_Content: '<p>Con i cookie statistici possiamo analizzare l’uso del sito e migliorare le pagine.</p>'
+    Marketing: 'Marketing'
+    Marketing_Content: '<p>I cookie di marketing sono usati per misurare il successo delle nostre campagne pubblicitarie.</p>'
+    Preferences: 'Preferenze'
+    Prefrences_Content: '<p>Con i cookie di preferenza possiamo personalizzare la tua esperienza.</p>'
+  XD\CookieConsent\Forms\CookieConsentForm:
+    Save: 'Salva'
+    FormMessage: 'Le tue preferenze sono state salvate'
+  XD\CookieConsent\Model\CookiePolicyPage:
+    Title: 'Informativa sui cookie'
+  XD\CookieConsent\Model\PrivacyPolicyPage:
+    Title: 'Informativa sulla privacy'
+    Content: '<p>Puoi compilare questa pagina con la tua informativa sulla privacy</p>'
+  XD\CookieConsent\Model\TermsAndConditionsPage:
+    Title: 'Termini e condizioni'
+    Content: '<p>Puoi compilare questa pagina con i tuoi termini e condizioni</p>'
+  XD\CookieConsent\Extensions\SiteConfigExtension:
+    Title: 'Questo sito utilizza i cookie'
+    Content: '<p>Utilizziamo i cookie per analizzare le attività sul nostro sito e migliorare le pagine. Dopo il tuo consenso, impostiamo cookie di partner per finalità di social media e pubblicità. Se lo desideri, puoi modificare le preferenze in «Gestisci preferenze».</p>'
+    CookieConsentActive: 'Consenso ai cookie attivo'
+    CookieConsentTitle: 'Titolo del consenso ai cookie'
+    CookieConsentContent: 'Contenuto del consenso ai cookie'
+    AcceptAllCookiesTitle: 'Etichetta «Accetta tutti»'
+    AcceptOnlyNecessaryCookiesTitle: 'Etichetta «Rifiuta / solo necessari»'
+    EditCookieSettingsTitle: 'Etichetta «Gestisci preferenze»'
+    PopupSettings: 'Etichette dei pulsanti'
+    RejectParityNote: 'Il rifiuto resta visibile quanto l’accettazione (requisito EDPB). Le vecchie opzioni per nascondere i pulsanti sono state rimosse.'
+  CookieConsent_local:
+    PHPSESSID_Purpose: 'Sessione'
+    PHPSESSID_Expiry: 'Sessione'
+    CookieConsent_Purpose: 'Memorizza le tue preferenze sui cookie'
+    CookieConsent_Expiry: '2 mesi'
+    FluentLocale_Purpose: 'Memorizza la tua preferenza di lingua'
+    FluentLocale_Expiry: '2 mesi'
+    _ga_Purpose: 'Statistiche'
+    _ga_Expiry: '2 anni'
+    _gat_Purpose: 'Statistiche'
+    _gat_Expiry: '24 ore'
+    _gid_Purpose: 'Statistiche'
+    _gid_Expiry: '24 ore'
