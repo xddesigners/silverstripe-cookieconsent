@@ -106,16 +106,26 @@ export default class CookieConsent {
             if (acceptAllLink) {
                 acceptAllLink.addEventListener('click', (e) => {
                     e.preventDefault();
-                    this.sendXHRRequest(acceptAllLink.href);
+                    this.sendXHRRequest(this.getActionUrl(acceptAllLink));
                 });
             }
             if (acceptNecessaryLink) {
                 acceptNecessaryLink.addEventListener('click', (e) => {
                     e.preventDefault();
-                    this.sendXHRRequest(acceptNecessaryLink.href);
+                    this.sendXHRRequest(this.getActionUrl(acceptNecessaryLink));
                 });
             }
         }
+    }
+
+    getActionUrl(el) {
+        // Support both the legacy <a href> markup and the <button> inside a <form> markup.
+        // Buttons have no href, so fall back to the enclosing form's action URL.
+        if (el.href) {
+            return el.href;
+        }
+        const form = el.closest('form');
+        return form ? form.action : null;
     }
 
     sendXHRRequest(url) {

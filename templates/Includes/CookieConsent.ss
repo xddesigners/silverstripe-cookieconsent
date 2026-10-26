@@ -10,28 +10,30 @@
         <div class="row gx-2">
             <% if not $SiteConfig.HideAcceptAllCookiesButton %>
                 <div class="col-md col-sm-12">
-                    <a class="btn btn-sm btn-success w-100 mb-md-0 mb-2" href="$AcceptAllCookiesLink" rel="nofollow"
-                       id="accept-all-cookies">
-                        <i class="fa-regular fa-check"></i>
-                        <% if $SiteConfig.AcceptAllCookiesTitle %>
-                            $SiteConfig.AcceptAllCookiesTitle
-                        <% else %>
-                            <%t XD\\CookieConsent\\CookieConsent.AcceptAllCookies 'Accept all cookies' %>
-                        <% end_if %>
-                    </a>
+                    <form method="post" action="$AcceptAllCookiesLink" class="m-0">
+                        <button type="submit" class="btn btn-sm btn-success w-100 mb-md-0 mb-2" id="accept-all-cookies">
+                            <i class="fa-regular fa-check"></i>
+                            <% if $SiteConfig.AcceptAllCookiesTitle %>
+                                $SiteConfig.AcceptAllCookiesTitle
+                            <% else %>
+                                <%t XD\\CookieConsent\\CookieConsent.AcceptAllCookies 'Accept all cookies' %>
+                            <% end_if %>
+                        </button>
+                    </form>
                 </div>
             <% end_if %>
             <% if not $SiteConfig.HideOnlyNecessaryyButton %>
                 <div class="col-md col-sm-12">
-                    <a class="btn btn-outline-gray-600 btn-sm w-100 mb-md-0 mb-2" href="$AcceptNecessaryCookiesLink"
-                       rel="nofollow" id="accept-necessary-cookies">
-                        <i class="fa-regular fa-close"></i>
-                        <% if $SiteConfig.AcceptOnlyNecessaryCookiesTitle %>
-                            $SiteConfig.AcceptOnlyNecessaryCookiesTitle
-                        <% else %>
-                            <%t XD\\CookieConsent\\CookieConsent.AcceptNecessaryCookies 'Accept necessary cookies' %>
-                        <% end_if %>
-                    </a>
+                    <form method="post" action="$AcceptNecessaryCookiesLink" class="m-0">
+                        <button type="submit" class="btn btn-outline-gray-600 btn-sm w-100 mb-md-0 mb-2" id="accept-necessary-cookies">
+                            <i class="fa-regular fa-close"></i>
+                            <% if $SiteConfig.AcceptOnlyNecessaryCookiesTitle %>
+                                $SiteConfig.AcceptOnlyNecessaryCookiesTitle
+                            <% else %>
+                                <%t XD\\CookieConsent\\CookieConsent.AcceptNecessaryCookies 'Accept necessary cookies' %>
+                            <% end_if %>
+                        </button>
+                    </form>
                 </div>
             <% end_if %>
             <% if not $SiteConfig.HideEditCookieSettingsButton %>
