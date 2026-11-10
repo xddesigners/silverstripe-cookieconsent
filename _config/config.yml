@@ -41,8 +41,6 @@ XD\CookieConsent\CookieConsent:
       cookies:
         local:
           - _ga
-          - _gat
-          - _gid
     #      www_google_com:
     #        - _ga
     #      _linkedin_com:
