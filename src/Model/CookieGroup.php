@@ -145,24 +145,34 @@ class CookieGroup extends DataObject
                 if (isset($groupSettings['cookies'])) {
                     $providers = $groupSettings['cookies'];
                     foreach ($providers as $providerName => $cookies) {
-                        if ($providerName === self::LOCAL_PROVIDER) {
-                            // Resolve the first-party provider label from SS_BASE_URL in ALL contexts
-                            // (CLI and web). Director::host() returns the current request host, which
-                            // varies between www and non-www, so each hostname a dev/build ran under
-                            // would otherwise seed a duplicate CookieDescription for the same cookie.
+                        $isLocal = $providerName === self::LOCAL_PROVIDER;
+                        if ($isLocal) {
+                            // First-party label, stable across hosts (www vs non-www, shop.*): the configured
+                            // cookie domain wins, then SS_BASE_URL's host, and only then the request host.
+                            $domain = CookieConsent::config()->get('domain');
                             $url = Environment::getEnv('SS_BASE_URL');
-                            $providerLabel = $url ? (parse_url($url, PHP_URL_HOST) ?: $url) : Director::host();
+                            $providerLabel = $domain
+                                ?: ($url ? (parse_url($url, PHP_URL_HOST) ?: $url) : Director::host());
                         } else {
                             $providerLabel = str_replace('_', '.', $providerName);
                         }
 
                         foreach ($cookies as $cookieName) {
-                            // Scope the lookup to this group so a re-run never duplicates an existing
-                            // cookie, and a same-named cookie in another group is not falsely matched.
-                            $cookie = $group->Cookies()->filter(array(
-                                'ConfigName' => $cookieName,
-                                'Provider' => $providerLabel
-                            ))->first();
+                            // Scope the lookup to this group so a same-named cookie in another group is not
+                            // matched. First-party cookies match on name only: once one exists (also when
+                            // its Provider was edited in the CMS, e.g. to ".example.com"), a dev/build from
+                            // another host must not seed a second copy.
+                            if ($isLocal) {
+                                $cookie = $group->Cookies()->filterAny([
+                                    'ConfigName' => $cookieName,
+                                    'Title' => $cookieName,
+                                ])->first();
+                            } else {
+                                $cookie = $group->Cookies()->filter([
+                                    'ConfigName' => $cookieName,
+                                    'Provider' => $providerLabel,
+                                ])->first();
+                            }
 
                             if (!$cookie) {
                                 $cookie = CookieDescription::create(array(
