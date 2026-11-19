@@ -30,20 +30,17 @@ class ContentControllerExtension extends Extension
     private static $allowed_actions = ['acceptAllCookies', 'acceptNecessaryCookies'];
 
     /**
-     * Place the necessary js and css
-     *
-     * @throws \Exception
+     * Set the Google Consent Mode default. This runs before the controller's init(), where sites add their GTM/GA
+     * snippet, so the default ends up in <head> ahead of the container as Google requires. The fixed uniqueness ID
+     * keeps it to one copy (and its first position) when several controllers init during one request.
      */
-    public function onAfterInit()
+    public function onBeforeInit()
     {
-        // Security only carries this extension for the accept actions. Its pages render through a page holder
-        // controller that already adds these requirements, and CMSSecurity (CMS re-login) should not get them.
+        // Security only carries this extension for the accept actions; its page holder controller adds this.
         if ($this->owner instanceof Security) {
             return;
         }
 
-        // if( CookieConsent::check() ) return;
-        // Initialize Google Consent Mode
         if (Environment::getEnv('GTM_CODE') || Environment::getEnv('GA_CODE')) {
             Requirements::insertHeadTags("
                 <script>
@@ -59,10 +56,24 @@ class ContentControllerExtension extends Extension
                       'ad_personalization': 'denied', // Marketing
                       'analytics_storage': 'denied', // Analytics
                     });
-                </script>"
+                </script>",
+                'cookieconsent-consent-default'
             );
         }
+    }
 
+    /**
+     * Place the necessary js and css
+     *
+     * @throws \Exception
+     */
+    public function onAfterInit()
+    {
+        // Security only carries this extension for the accept actions. Its pages render through a page holder
+        // controller that already adds these requirements, and CMSSecurity (CMS re-login) should not get them.
+        if ($this->owner instanceof Security) {
+            return;
+        }
 
         $module = ModuleLoader::getModule('xddesigners/silverstripe-cookieconsent');
         if (Config::inst()->get(CookieConsent::class, 'include_css')) {
