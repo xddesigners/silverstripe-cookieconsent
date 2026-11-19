@@ -24,7 +24,7 @@ use SilverStripe\Control\Director;
 /**
  * Class ContentControllerExtension
  * @package XD\CookieConsent
- * @property ContentController owner
+ * @property ContentController|Security owner
  */
 class ContentControllerExtension extends Extension
 {
@@ -37,6 +37,12 @@ class ContentControllerExtension extends Extension
      */
     public function onAfterInit()
     {
+        // Security only carries this extension for the accept actions. Its pages render through a page holder
+        // controller that already adds these requirements, and CMSSecurity (CMS re-login) should not get them.
+        if ($this->owner instanceof Security) {
+            return;
+        }
+
         // if( CookieConsent::check() ) return;
         // Initialize Google Consent Mode
         if (Environment::getEnv('GTM_CODE') || Environment::getEnv('GA_CODE')) {

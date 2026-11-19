@@ -90,6 +90,13 @@ SilverStripe\CMS\Controllers\ContentController:
   extensions:
     - XD\CookieConsent\Extensions\ContentControllerExtension
 
+# Security pages (login, register, passwordless) render through a page holder whose Link() is /Security/, so the
+# banner's accept links point to /Security/acceptAllCookies. Give Security the accept actions as well, otherwise
+# those requests 404 and the consent is never stored.
+SilverStripe\Security\Security:
+  extensions:
+    - XD\CookieConsent\Extensions\ContentControllerExtension
+
 SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - XD\CookieConsent\Extensions\SiteConfigExtension
